@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.a-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.a-button-primary {
+  background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+  border: 1px solid #a88734;
+  border-color: #a88734 #9c7e31 #846a29;
+}
+.a-button-primary:hover {
+  background: linear-gradient(to bottom, #f5d78e, #eeb933);
+}
+
+.checkout-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+}
+.btn-primary {
+  background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+  border: 1px solid #a88734;
+  border-color: #a88734 #9c7e31 #846a29;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+}
+.btn-primary:hover {
+  background: linear-gradient(to bottom, #f5d78e, #eeb933);
+}
+.section-number {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
