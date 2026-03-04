@@ -9,67 +9,100 @@ import SocialLogins from "./SocialLogins";
 export default function RegistrationContent() {
   const [userType, setUserType] = useState("customer");
   return (
-    <div className="bg-white text-amazon-text flex flex-col min-h-screen items-center pt-8">
-      <div className="mb-4">
-        <Link href="/" className="flex items-center">
-          <span className="text-3xl font-bold tracking-tighter text-black">
-            gadgets<span className="italic text-amazon-secondary">BD</span>
+    <div className="bg-[#FAF9F6] flex flex-col min-h-screen items-center justify-center px-4 py-12">
+      {/* ── LOGO ──────────────────────────────────────────────────── */}
+      <Link href="/" className="mb-8 group">
+        <span className="text-2xl font-black tracking-tight text-[#1a1a2e] group-hover:text-[#D4A853] transition-colors duration-200">
+          gadget
+          <span className="text-[#D4A853] group-hover:text-[#1a1a2e] transition-colors duration-200">
+            ory
           </span>
-        </Link>
-      </div>
+        </span>
+      </Link>
 
-      {/* Registration Card */}
-      <div className="w-full max-w-[350px] p-6 a-box mb-6">
-        <h1 className="text-2xl font-normal mb-4">Create account</h1>
+      {/* ── REGISTER CARD ─────────────────────────────────────────── */}
+      <div className="w-full max-w-[420px] bg-white border border-[#E8E4DD] rounded-2xl shadow-sm overflow-hidden">
+        {/* Gold top accent */}
+        <div className="h-1 w-full bg-gradient-to-r from-[#D4A853] via-[#c9973d] to-[#e8c87a]" />
 
-        <RegistrationForm userType={userType} setUserType={setUserType} />
-        <SocialLogins mode={"register"} />
+        <div className="p-8">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-6 rounded-full bg-[#D4A853]" />
+            <h1 className="text-xl font-black text-[#1a1a2e] tracking-tight">
+              Create Account
+            </h1>
+          </div>
 
-        <div className="mt-4 text-xs">
-          <p>
-            By creating an account, you agree to gadgetory's
-            <a href="#" className="text-amazon-blue hover:underline">
-              Conditions of Use
-            </a>
-            and
-            <a href="#" className="text-amazon-blue hover:underline">
-              Privacy Notice
-            </a>
-            .
-          </p>
-        </div>
+          {/* Account type toggle */}
+          <div className="flex items-center gap-1 bg-[#F5F3EF] p-1 rounded-xl border border-[#E8E4DD] mb-6">
+            {[
+              { value: "customer", label: "Customer" },
+              { value: "shopOwner", label: "Shop Owner" },
+            ].map(({ value, label }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setUserType(value)}
+                className={`flex-1 py-2 rounded-lg text-xs font-bold tracking-wide transition-all duration-200 ${
+                  userType === value
+                    ? "bg-white text-[#1a1a2e] shadow-sm border border-[#E8E4DD]"
+                    : "text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
-        <div className="mt-4 pt-4 border-t border-gray-300">
-          <p className="text-sm">
-            Already have an account?{" "}
-            <Link
-              href="/login"
-              className="text-amazon-blue hover:text-amazon-orange hover:underline"
-            >
-              Sign in
-            </Link>
-          </p>
-        </div>
-
-        {/* Shop Owner Info */}
-        {userType === "shopOwner" && (
-          <div
-            id="shopOwnerInfo"
-            className=" mt-4 p-3 bg-blue-50 border border-blue-200 rounded-sm"
-          >
-            <div className="flex gap-2">
-              <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-              <div className="text-xs text-blue-900">
-                <p className="font-bold mb-1">Shop Owner Registration</p>
-                <p>
+          {/* Shop owner info banner */}
+          {userType === "shopOwner" && (
+            <div className="flex items-start gap-3 p-4 bg-[#1a1a2e]/3 border border-[#1a1a2e]/8 rounded-2xl mb-5">
+              <div className="w-8 h-8 rounded-xl bg-[#D4A853]/10 flex items-center justify-center shrink-0">
+                <Info className="w-4 h-4 text-[#D4A853]" />
+              </div>
+              <div>
+                <p className="text-xs font-black text-[#1a1a2e]/70 mb-0.5">
+                  Shop Owner Registration
+                </p>
+                <p className="text-[11px] text-[#1a1a2e]/40 leading-relaxed">
                   After registration, you'll be able to set up your shop
                   profile, add products, and start selling on gadgetory
                   marketplace.
                 </p>
               </div>
             </div>
+          )}
+
+          <RegistrationForm userType={userType} setUserType={setUserType} />
+          <SocialLogins mode="register" />
+
+          {/* Legal */}
+          <p className="mt-5 text-[11px] text-[#1a1a2e]/30 leading-relaxed">
+            By creating an account, you agree to gadgetory's{" "}
+            <a href="#" className="text-[#D4A853] hover:underline">
+              Conditions of Use
+            </a>{" "}
+            and{" "}
+            <a href="#" className="text-[#D4A853] hover:underline">
+              Privacy Notice
+            </a>
+            .
+          </p>
+
+          {/* Sign in link */}
+          <div className="mt-5 pt-5 border-t border-[#E8E4DD] flex items-center justify-between">
+            <p className="text-xs text-[#1a1a2e]/40 font-medium">
+              Already have an account?
+            </p>
+            <Link
+              href="/login"
+              className="text-xs font-black text-[#D4A853] hover:underline underline-offset-4 tracking-wide"
+            >
+              Sign In →
+            </Link>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

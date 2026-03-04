@@ -5,40 +5,50 @@ import SocialLogins from "./SocialLogins";
 
 export default function LoginContent() {
   return (
-    <div className="bg-white text-amazon-text flex flex-col min-h-screen items-center pt-8">
-      <div className="mb-4">
-        <Link href="/" className="flex items-center">
-          <span className="text-3xl font-bold tracking-tighter text-black">
-            gadgets<span className="italic text-amazon-secondary">BD</span>
+    <div className="bg-[#FAF9F6] flex flex-col min-h-screen items-center justify-center px-4 py-12">
+      {/* ── LOGO ──────────────────────────────────────────────────── */}
+      <Link href="/" className="mb-8 group">
+        <span className="text-2xl font-black tracking-tight text-[#1a1a2e] group-hover:text-[#D4A853] transition-colors duration-200">
+          gadget
+          <span className="text-[#D4A853] group-hover:text-[#1a1a2e] transition-colors duration-200">
+            ory
           </span>
-        </Link>
-      </div>
+        </span>
+      </Link>
 
-      {/* Login Card */}
-      <div className="w-full max-w-[350px] p-6 a-box mb-6">
-        <h1 className="text-2xl font-normal mb-4">Sign in</h1>
+      {/* ── LOGIN CARD ────────────────────────────────────────────── */}
+      <div className="w-full max-w-[400px] bg-white border border-[#E8E4DD] rounded-2xl shadow-sm overflow-hidden">
+        {/* Gold top accent */}
+        <div className="h-1 w-full bg-gradient-to-r from-[#D4A853] via-[#c9973d] to-[#e8c87a]" />
 
-        <LoginForm />
-        <SocialLogins mode={"login"} />
+        <div className="p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-6 rounded-full bg-[#D4A853]" />
+            <h1 className="text-xl font-black text-[#1a1a2e] tracking-tight">
+              Sign In
+            </h1>
+          </div>
 
-        <div className="mt-4 text-xs">
-          <p>
-            By continuing, you agree to gadgetory's
-            <a href="#" className="text-amazon-blue hover:underline">
+          <LoginForm />
+          <SocialLogins mode="login" />
+
+          {/* Legal */}
+          <p className="mt-5 text-[11px] text-[#1a1a2e]/30 leading-relaxed">
+            By continuing, you agree to gadgetory's{" "}
+            <a href="#" className="text-[#D4A853] hover:underline">
               Conditions of Use
-            </a>
-            and
-            <a href="#" className="text-amazon-blue hover:underline">
+            </a>{" "}
+            and{" "}
+            <a href="#" className="text-[#D4A853] hover:underline">
               Privacy Notice
             </a>
             .
           </p>
-        </div>
 
-        <div className="mt-4">
+          {/* Help */}
           <a
             href="#"
-            className="text-sm text-amazon-blue hover:text-amazon-orange hover:underline flex items-center gap-1"
+            className="inline-flex items-center gap-1 mt-3 text-xs font-bold text-[#1a1a2e]/30 hover:text-[#D4A853] transition-colors duration-150"
           >
             <ChevronRight className="w-3 h-3" />
             Need help?
@@ -46,25 +56,20 @@ export default function LoginContent() {
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="w-full max-w-[350px] mb-4">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-white px-2 text-gray-500">
-              New to gadgetory?
-            </span>
-          </div>
-        </div>
+      {/* ── DIVIDER ───────────────────────────────────────────────── */}
+      <div className="w-full max-w-[400px] flex items-center gap-3 my-5">
+        <div className="flex-1 h-px bg-[#E8E4DD]" />
+        <span className="text-[11px] font-medium text-[#1a1a2e]/30">
+          New to gadgetory?
+        </span>
+        <div className="flex-1 h-px bg-[#E8E4DD]" />
       </div>
 
-      {/* Create Account Button */}
-      <div className="w-full max-w-[350px] mb-8">
+      {/* ── CREATE ACCOUNT ────────────────────────────────────────── */}
+      <div className="w-full max-w-[400px]">
         <Link
           href="/register"
-          className="block w-full py-1.5 border border-gray-400 rounded-sm text-center text-sm hover:bg-gray-50 transition-colors"
+          className="block w-full py-3.5 bg-white border border-[#E8E4DD] hover:border-[#D4A853]/40 hover:bg-[#FAF9F6] text-[#1a1a2e]/60 hover:text-[#1a1a2e] text-xs font-bold tracking-wide text-center rounded-2xl transition-all duration-200 shadow-sm"
         >
           Create your gadgetory account
         </Link>

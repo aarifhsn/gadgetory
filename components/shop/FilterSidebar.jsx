@@ -42,46 +42,64 @@ export default function FilterSidebar({ currentFilters }) {
   };
 
   return (
-    <div className="w-64 hidden lg:block flex-shrink-0 border-r pr-4">
-      <CategoryFilter
-        selected={currentFilters.category}
-        onToggle={(value) => toggleArrayFilter("category", value)}
-      />
+    <div className="w-64 hidden lg:flex flex-col flex-shrink-0 gap-1">
+      {/* Sidebar header */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+        <span className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+          Filters
+        </span>
+      </div>
 
-      <BrandFilter
-        selected={currentFilters.brands}
-        onToggle={(value) => toggleArrayFilter("brands", value)}
-      />
-
-      <RatingFilter
-        selected={currentFilters.rating}
-        onChange={(value) => updateFilter("rating", value)}
-      />
-
-      <PriceFilter
-        minPrice={currentFilters.minPrice}
-        maxPrice={currentFilters.maxPrice}
-        onUpdate={(min, max) => {
-          const params = new URLSearchParams(searchParams.toString());
-          if (min) params.set("minPrice", min);
-          else params.delete("minPrice");
-          if (max) params.set("maxPrice", max);
-          else params.delete("maxPrice");
-          router.push(`?${params.toString()}`);
-        }}
-      />
-
-      <AvailabilityFilter
-        inStock={currentFilters.inStock}
-        onToggle={(value) => updateFilter("inStock", value)}
-        preOrder={currentFilters.preOrder}
-        onTogglePreOrder={(value) => updateFilter("preOrder", value)}
-      />
-
-      <ConditionFilter
-        selected={currentFilters.condition}
-        onChange={(value) => updateFilter("condition", value)}
-      />
+      {/* Each filter section sits in its own card */}
+      <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm divide-y divide-[#F5F3EF]">
+        <div className="p-4">
+          <CategoryFilter
+            selected={currentFilters.category}
+            onToggle={(value) => toggleArrayFilter("category", value)}
+          />
+        </div>
+        <div className="p-4">
+          <BrandFilter
+            selected={currentFilters.brands}
+            onToggle={(value) => toggleArrayFilter("brands", value)}
+          />
+        </div>
+        <div className="p-4">
+          <RatingFilter
+            selected={currentFilters.rating}
+            onChange={(value) => updateFilter("rating", value)}
+          />
+        </div>
+        <div className="p-4">
+          <PriceFilter
+            minPrice={currentFilters.minPrice}
+            maxPrice={currentFilters.maxPrice}
+            onUpdate={(min, max) => {
+              const params = new URLSearchParams(searchParams.toString());
+              if (min) params.set("minPrice", min);
+              else params.delete("minPrice");
+              if (max) params.set("maxPrice", max);
+              else params.delete("maxPrice");
+              router.push(`?${params.toString()}`);
+            }}
+          />
+        </div>
+        <div className="p-4">
+          <AvailabilityFilter
+            inStock={currentFilters.inStock}
+            onToggle={(value) => updateFilter("inStock", value)}
+            preOrder={currentFilters.preOrder}
+            onTogglePreOrder={(value) => updateFilter("preOrder", value)}
+          />
+        </div>
+        <div className="p-4">
+          <ConditionFilter
+            selected={currentFilters.condition}
+            onChange={(value) => updateFilter("condition", value)}
+          />
+        </div>
+      </div>
     </div>
   );
 }

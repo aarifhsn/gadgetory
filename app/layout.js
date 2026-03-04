@@ -43,7 +43,6 @@ export default function RootLayout({ children, modal }) {
             {modal}
             {children}
             <ToastContainer
-              position="bottom-right"
               toastClassName="!bg-white !text-[#1a1a2e] !border !border-[#e8e4dd] !rounded-xl !shadow-lg !font-medium"
               progressClassName="!bg-[#D4A853]"
             />

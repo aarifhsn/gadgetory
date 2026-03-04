@@ -113,349 +113,545 @@ export default function PaymentProcessPage() {
     }
   };
 
-  if (cart.length === 0) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
-        <button
-          onClick={() => router.push("/")}
-          className="btn-primary px-6 py-2 rounded-md"
-        >
-          Continue Shopping
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <main className="checkout-container flex-1 py-10 px-4 flex flex-col lg:flex-row gap-8">
-      {/* Left Side: Steps */}
-      <div className="flex-1 space-y-6">
-        <button
-          onClick={() => setShowEditModal(true)}
-          className="text-black font-semibold text-sm  hover:underline bg-amazon-secondary rounded-md mb-1 px-4 py-2"
-        >
-          Edit Order Details
-        </button>
-        {/* 1. Shipping Address Summary */}
-        <div className="hover:bg-gray-50 border-b border-gray-300 pb-6 flex justify-between items-start transition-colors cursor-pointer">
-          <div>
-            <span className="section-number mr-4">1</span>
-            <span className="font-bold text-lg">Shipping address</span>
+    <main className="flex-1 py-10 px-4 md:px-16 bg-[#FAF9F6]">
+      <div className="max-w-6xl mx-auto">
+        {/* ── EMPTY STATE ───────────────────────────────────────────── */}
+        {cart.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-28 text-center">
+            <div className="w-20 h-20 rounded-3xl bg-[#F5F3EF] border border-[#E8E4DD] flex items-center justify-center mb-5">
+              <ShieldCheck className="w-9 h-9 text-[#1a1a2e]/15" />
+            </div>
+            <h2 className="text-xl font-black text-[#1a1a2e] mb-6">
+              Your cart is empty
+            </h2>
+            <button
+              onClick={() => router.push("/")}
+              className="bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] text-xs font-black tracking-[0.2em] uppercase px-8 py-4 rounded-full transition-all duration-300"
+            >
+              Continue Shopping
+            </button>
           </div>
-          <div className="text-sm flex-1 ml-10">
-            {shippingAddress ? (
-              <>
-                <p>{shippingAddress.name}</p>
-                <p>{shippingAddress.address}</p>
-                <p>
-                  {shippingAddress.city}, {shippingAddress.postalCode}
-                </p>
-                <p>{shippingAddress.country}</p>
-                <p className="mt-1 text-gray-600">
-                  Phone: {shippingAddress.phone}
-                </p>
-                {shippingAddress.email && (
-                  <p className="mt-1 text-gray-600">
-                    Email: {shippingAddress.email}
-                  </p>
-                )}
-              </>
-            ) : (
-              <p className="text-gray-500">No address added</p>
-            )}
-          </div>
-          <button
-            onClick={() => router.push("/checkout/address")}
-            className="text-amazon-blue text-xs hover:underline hover:text-amazon-orange"
-          >
-            {shippingAddress ? "Change" : "Add"}
-          </button>
-        </div>
+        )}
 
-        {/* 2. Selected Products List */}
-        <div className="pb-6 border-b border-gray-300">
-          <div className="flex items-center mb-4">
-            <span className="section-number mr-4">2</span>
-            <span className="font-bold text-lg">Review items</span>
-          </div>
-
-          <div className="box p-4 space-y-4">
-            {cart.map((item) => (
-              <div
-                key={item.id}
-                className="flex gap-4 pb-4 border-b border-gray-200 last:border-0"
-              >
-                <div className="w-24 h-24 bg-gray-50 flex items-center justify-center flex-shrink-0 relative">
-                  <Image
-                    width={100}
-                    height={100}
-                    src={item.image}
-                    alt={item.name}
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between">
-                    <h3 className="text-sm font-medium mb-1">{item.name}</h3>
-                    <CircleX
-                      onClick={() => removeFromCart(item.id)}
-                      className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
-                      title="Remove"
-                    />
-                  </div>
-                  <p className="text-xs text-gray-600 mb-2">
-                    Sold by: {item.shopInfo?.name || "Official Store"}
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <p className="text-sm font-bold text-amazon-orange">
-                      ৳{item.price.toLocaleString()}
-                    </p>
-                    <div className="flex items-center gap-2 text-xs">
-                      <span>Qty:</span>
-                      <select
-                        value={item.quantity}
-                        onChange={(e) =>
-                          updateQuantity(item.id, Number(e.target.value))
-                        }
-                        className="border border-gray-300 rounded px-2 py-0.5"
-                      >
-                        {[...Array(10)].map((_, i) => (
-                          <option key={i + 1} value={i + 1}>
-                            {i + 1}
-                          </option>
-                        ))}
-                      </select>
+        {cart.length > 0 && (
+          <>
+            {/* ── CHECKOUT PROGRESS ───────────────────────────────────── */}
+            <div className="flex items-center justify-center gap-2 mb-10">
+              {[
+                { step: 1, label: "Cart", done: true },
+                { step: 2, label: "Address", done: true },
+                { step: 3, label: "Payment", active: true },
+              ].map(({ step, label, done, active }, idx) => (
+                <div key={step} className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black ${
+                        done
+                          ? "bg-[#D4A853] text-[#1a1a2e]"
+                          : active
+                            ? "bg-[#1a1a2e] text-white"
+                            : "bg-[#E8E4DD] text-[#1a1a2e]/30"
+                      }`}
+                    >
+                      {done ? (
+                        <svg
+                          className="w-3.5 h-3.5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={3}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      ) : (
+                        step
+                      )}
                     </div>
+                    <span
+                      className={`text-xs font-bold tracking-wide ${active ? "text-[#1a1a2e]" : done ? "text-[#D4A853]" : "text-[#1a1a2e]/25"}`}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                  {idx < 2 && (
+                    <div
+                      className={`w-12 h-px ${done ? "bg-[#D4A853]" : "bg-[#E8E4DD]"}`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-6 items-start">
+              {/* ── LEFT: STEPS ───────────────────────────────────────── */}
+              <div className="flex-1 min-w-0 space-y-5">
+                {/* Edit order button */}
+                <button
+                  onClick={() => setShowEditModal(true)}
+                  className="flex items-center gap-2 text-xs font-bold text-[#1a1a2e]/50 hover:text-[#D4A853] border border-[#E8E4DD] hover:border-[#D4A853]/40 bg-white px-4 py-2.5 rounded-xl transition-all duration-200"
+                >
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  Edit Order Details
+                </button>
+
+                {/* ── STEP 1: SHIPPING ADDRESS ──────────────────────── */}
+                <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+                  <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-[#D4A853] flex items-center justify-center text-[10px] font-black text-[#1a1a2e]">
+                        1
+                      </div>
+                      <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                        Shipping Address
+                      </h2>
+                    </div>
+                    <button
+                      onClick={() => router.push("/checkout/address")}
+                      className="text-[11px] font-bold text-[#D4A853] hover:underline underline-offset-4"
+                    >
+                      {shippingAddress ? "Change" : "Add"} →
+                    </button>
+                  </div>
+                  <div className="px-6 py-5">
+                    {shippingAddress ? (
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-[#D4A853]/10 flex items-center justify-center shrink-0">
+                          <svg
+                            className="w-4 h-4 text-[#D4A853]"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-sm font-black text-[#1a1a2e]">
+                            {shippingAddress.name}
+                          </p>
+                          <p className="text-xs text-[#1a1a2e]/45 mt-0.5 leading-relaxed">
+                            {shippingAddress.address}
+                            <br />
+                            {shippingAddress.city}, {shippingAddress.postalCode}{" "}
+                            · {shippingAddress.country}
+                          </p>
+                          <div className="flex items-center gap-4 mt-1.5">
+                            <p className="text-[11px] text-[#1a1a2e]/35">
+                              📞 {shippingAddress.phone}
+                            </p>
+                            {shippingAddress.email && (
+                              <p className="text-[11px] text-[#1a1a2e]/35">
+                                ✉ {shippingAddress.email}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-[#1a1a2e]/35 italic">
+                        No address added yet.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* ── STEP 2: REVIEW ITEMS ──────────────────────────── */}
+                <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+                  <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-[#D4A853] flex items-center justify-center text-[10px] font-black text-[#1a1a2e]">
+                      2
+                    </div>
+                    <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                      Review Items
+                    </h2>
+                  </div>
+
+                  <div className="divide-y divide-[#F5F3EF]">
+                    {cart.map((item) => (
+                      <div
+                        key={item.id}
+                        className="p-5 flex gap-4 hover:bg-[#FDFCFA] transition-colors duration-150"
+                      >
+                        <div className="w-20 h-20 rounded-xl bg-[#F5F3EF] border border-[#E8E4DD] overflow-hidden relative shrink-0">
+                          <Image
+                            width={100}
+                            height={100}
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-contain p-2"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2">
+                            <h3 className="text-sm font-bold text-[#1a1a2e] line-clamp-2 leading-snug">
+                              {item.name}
+                            </h3>
+                            <button
+                              onClick={() => removeFromCart(item.id)}
+                              className="shrink-0 w-6 h-6 rounded-lg flex items-center justify-center text-[#1a1a2e]/20 hover:text-rose-500 hover:bg-rose-50 transition-all duration-200"
+                            >
+                              <CircleX className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <p className="text-[11px] text-[#1a1a2e]/35 mt-1">
+                            Sold by{" "}
+                            <span className="font-medium text-[#1a1a2e]/50">
+                              {item.shopInfo?.name || "Official Store"}
+                            </span>
+                          </p>
+                          <div className="flex items-center gap-4 mt-3">
+                            <span className="text-sm font-black text-[#1a1a2e]">
+                              ৳{item.price.toLocaleString()}
+                            </span>
+                            <div className="flex items-center gap-2 bg-[#F5F3EF] border border-[#E8E4DD] rounded-xl px-3 py-1.5">
+                              <button
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity - 1)
+                                }
+                                disabled={item.quantity <= 1}
+                                className="w-4 h-4 flex items-center justify-center text-[#1a1a2e]/40 hover:text-[#1a1a2e] disabled:opacity-20 font-black text-sm"
+                              >
+                                −
+                              </button>
+                              <span className="text-xs font-black text-[#1a1a2e] w-4 text-center">
+                                {item.quantity}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity + 1)
+                                }
+                                className="w-4 h-4 flex items-center justify-center text-[#1a1a2e]/40 hover:text-[#1a1a2e] font-black text-sm"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── STEP 3: PAYMENT METHOD ────────────────────────── */}
+                <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+                  <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-[#1a1a2e] flex items-center justify-center text-[10px] font-black text-white">
+                      3
+                    </div>
+                    <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                      Payment Method
+                    </h2>
+                  </div>
+
+                  <form onSubmit={handlePlaceOrder} className="p-6 space-y-4">
+                    {/* Card option */}
+                    <label
+                      className={`flex items-start gap-4 p-4 border rounded-2xl cursor-pointer transition-all duration-200 ${
+                        paymentMethod === "card"
+                          ? "border-[#D4A853]/50 bg-[#D4A853]/5 ring-2 ring-[#D4A853]/20"
+                          : "border-[#E8E4DD] hover:border-[#D4A853]/30 hover:bg-[#FAF9F6]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="payment"
+                        value="card"
+                        checked={paymentMethod === "card"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="mt-1 accent-[#D4A853]"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-black text-[#1a1a2e]">
+                            Credit or Debit Card
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+                              width={32}
+                              height={20}
+                              alt="Visa"
+                            />
+                            <Image
+                              src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+                              width={32}
+                              height={20}
+                              alt="Mastercard"
+                            />
+                          </div>
+                        </div>
+
+                        {paymentMethod === "card" && (
+                          <div className="mt-4 space-y-3">
+                            <div>
+                              <label className="block text-[11px] font-bold text-[#1a1a2e]/50 mb-1.5 tracking-wide">
+                                Name on Card
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="John Doe"
+                                required
+                                className="w-full px-4 py-2.5 bg-white border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all"
+                              />
+                            </div>
+                            <div className="flex gap-3">
+                              <div className="flex-1">
+                                <label className="block text-[11px] font-bold text-[#1a1a2e]/50 mb-1.5 tracking-wide">
+                                  Card Number
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="#### #### #### ####"
+                                  required
+                                  className="w-full px-4 py-2.5 bg-white border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all"
+                                />
+                              </div>
+                              <div className="w-24">
+                                <label className="block text-[11px] font-bold text-[#1a1a2e]/50 mb-1.5 tracking-wide">
+                                  CVV
+                                </label>
+                                <input
+                                  type="password"
+                                  placeholder="•••"
+                                  required
+                                  maxLength={3}
+                                  className="w-full px-4 py-2.5 bg-white border border-[#E8E4DD] rounded-xl text-sm outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-[#1a1a2e]/50 mb-1.5 tracking-wide">
+                                Expiration Date
+                              </label>
+                              <div className="flex gap-3">
+                                {[
+                                  {
+                                    placeholder: "MM",
+                                    options: [...Array(12)].map((_, i) =>
+                                      String(i + 1).padStart(2, "0"),
+                                    ),
+                                  },
+                                  {
+                                    placeholder: "YYYY",
+                                    options: [...Array(10)].map((_, i) =>
+                                      String(2025 + i),
+                                    ),
+                                  },
+                                ].map(({ placeholder, options }) => (
+                                  <div key={placeholder} className="relative">
+                                    <select
+                                      required
+                                      className="appearance-none px-4 py-2.5 pr-8 bg-white border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all cursor-pointer"
+                                    >
+                                      <option value="">{placeholder}</option>
+                                      {options.map((o) => (
+                                        <option key={o} value={o}>
+                                          {o}
+                                        </option>
+                                      ))}
+                                    </select>
+                                    <svg
+                                      className="w-3 h-3 text-[#1a1a2e]/30 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none rotate-90"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2.5}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M9 5l7 7-7 7"
+                                      />
+                                    </svg>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </label>
+
+                    {/* COD option */}
+                    <label
+                      className={`flex items-start gap-4 p-4 border rounded-2xl cursor-pointer transition-all duration-200 ${
+                        paymentMethod === "cod"
+                          ? "border-[#D4A853]/50 bg-[#D4A853]/5 ring-2 ring-[#D4A853]/20"
+                          : "border-[#E8E4DD] hover:border-[#D4A853]/30 hover:bg-[#FAF9F6]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="payment"
+                        value="cod"
+                        checked={paymentMethod === "cod"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="mt-1 accent-[#D4A853]"
+                      />
+                      <div>
+                        <span className="text-sm font-black text-[#1a1a2e] block">
+                          Cash on Delivery
+                        </span>
+                        <span className="text-xs text-[#1a1a2e]/40 mt-0.5 block">
+                          Pay when you receive your order
+                        </span>
+                      </div>
+                    </label>
+                  </form>
+                </div>
+              </div>
+
+              {/* ── RIGHT: ORDER SUMMARY ──────────────────────────────── */}
+              <div className="w-full lg:w-80 shrink-0 sticky top-20">
+                <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+                  <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+                    <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+                    <h3 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                      Order Summary
+                    </h3>
+                  </div>
+
+                  <div className="p-6 space-y-5">
+                    {/* Price breakdown */}
+                    <div className="space-y-2.5">
+                      {[
+                        {
+                          label: `Items (${getItemCount()})`,
+                          value: `৳${getCartTotal().toLocaleString()}`,
+                        },
+                        {
+                          label: "Delivery Fee",
+                          value: deliveryFee === 0 ? "FREE" : `৳${deliveryFee}`,
+                          highlight: deliveryFee === 0,
+                        },
+                        {
+                          label: "Service Fee",
+                          value: `৳${serviceFee.toLocaleString()}`,
+                        },
+                      ].map(({ label, value, highlight }) => (
+                        <div
+                          key={label}
+                          className="flex items-center justify-between"
+                        >
+                          <span className="text-xs text-[#1a1a2e]/40 font-medium">
+                            {label}
+                          </span>
+                          <span
+                            className={`text-xs font-bold ${highlight ? "text-emerald-600" : "text-[#1a1a2e]"}`}
+                          >
+                            {value}
+                          </span>
+                        </div>
+                      ))}
+                      <div className="flex items-center justify-between pt-3 border-t border-[#E8E4DD]">
+                        <span className="text-sm font-black text-[#1a1a2e]">
+                          Order Total
+                        </span>
+                        <span className="text-xl font-black text-[#1a1a2e]">
+                          ৳{orderTotal.toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Trust badges */}
+                    <div className="space-y-2">
+                      {[
+                        {
+                          icon: Truck,
+                          text: "FREE delivery on orders over ৳50,000",
+                          green: true,
+                        },
+                        {
+                          icon: ShieldCheck,
+                          text: "Secure & encrypted checkout",
+                        },
+                      ].map(({ icon: Icon, text, green }) => (
+                        <div key={text} className="flex items-center gap-2.5">
+                          <Icon
+                            className={`w-4 h-4 shrink-0 ${green ? "text-emerald-500" : "text-[#1a1a2e]/25"}`}
+                          />
+                          <span
+                            className={`text-[11px] font-medium ${green ? "text-emerald-600" : "text-[#1a1a2e]/35"}`}
+                          >
+                            {text}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Place order CTA */}
+                    <button
+                      onClick={handlePlaceOrder}
+                      disabled={cart.length === 0 || loading}
+                      className="w-full py-4 bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] text-xs font-black tracking-[0.2em] uppercase rounded-xl shadow-lg shadow-[#1a1a2e]/10 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {loading ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                          Placing Order...
+                        </span>
+                      ) : (
+                        "Place Your Order"
+                      )}
+                    </button>
+
+                    {/* Legal */}
+                    <p className="text-[10px] text-[#1a1a2e]/25 text-center leading-relaxed">
+                      By placing your order, you agree to gadgetory's{" "}
+                      <a href="#" className="text-[#D4A853] hover:underline">
+                        privacy notice
+                      </a>{" "}
+                      and{" "}
+                      <a href="#" className="text-[#D4A853] hover:underline">
+                        conditions of use
+                      </a>
+                      .
+                    </p>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 3. Payment Method */}
-        <div className="pb-6">
-          <div className="flex items-center mb-6">
-            <span className="section-number mr-4">3</span>
-            <span className="font-bold text-lg text-amazon-orange">
-              Choose a payment method
-            </span>
-          </div>
-
-          <form
-            onSubmit={handlePlaceOrder}
-            className="box p-6 space-y-6 shadow-sm"
-          >
-            <div className="space-y-4">
-              <label
-                className={`flex items-start gap-3 p-3 border rounded-md cursor-pointer hover:bg-amazon-background transition-colors ${
-                  paymentMethod === "card"
-                    ? "bg-gray-50 border-amazon-orange ring-1 ring-amazon-orange"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="payment"
-                  value="card"
-                  checked={paymentMethod === "card"}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="mt-1"
-                />
-                <div>
-                  <span className="font-bold block text-sm">
-                    Credit or Debit Card
-                  </span>
-                  <div className="flex gap-2 mt-2">
-                    <Image
-                      src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
-                      width={32}
-                      height={20}
-                      alt="Visa"
-                    />
-                    <Image
-                      src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
-                      width={32}
-                      height={20}
-                      alt="Mastercard"
-                    />
-                  </div>
-                </div>
-              </label>
-
-              {paymentMethod === "card" && (
-                <div className="pl-8 space-y-4">
-                  <div>
-                    <label className="text-xs font-bold block mb-1">
-                      Name on card
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="John Doe"
-                      required
-                      className="w-full max-w-sm px-2 py-1 border border-gray-400 rounded-sm text-sm outline-none focus:ring-1 focus:ring-amazon-blue"
-                    />
-                  </div>
-                  <div className="flex flex-wrap gap-4">
-                    <div className="flex-1 min-w-[200px]">
-                      <label className="text-xs font-bold block mb-1">
-                        Card number
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="#### #### #### ####"
-                        required
-                        className="w-full px-2 py-1 border border-gray-400 rounded-sm text-sm outline-none focus:ring-1 focus:ring-amazon-blue"
-                      />
-                    </div>
-                    <div className="w-24">
-                      <label className="text-xs font-bold block mb-1">
-                        CVV
-                      </label>
-                      <input
-                        type="password"
-                        placeholder="***"
-                        required
-                        maxLength={3}
-                        className="w-full px-2 py-1 border border-gray-400 rounded-sm text-sm outline-none focus:ring-1 focus:ring-amazon-blue"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold block mb-1">
-                      Expiration date
-                    </label>
-                    <div className="flex gap-2">
-                      <select
-                        required
-                        className="bg-gray-100 border border-gray-300 rounded p-1 text-xs"
-                      >
-                        <option value="">MM</option>
-                        {[...Array(12)].map((_, i) => (
-                          <option
-                            key={i + 1}
-                            value={String(i + 1).padStart(2, "0")}
-                          >
-                            {String(i + 1).padStart(2, "0")}
-                          </option>
-                        ))}
-                      </select>
-                      <select
-                        required
-                        className="bg-gray-100 border border-gray-300 rounded p-1 text-xs"
-                      >
-                        <option value="">YYYY</option>
-                        {[...Array(10)].map((_, i) => (
-                          <option key={2025 + i} value={2025 + i}>
-                            {2025 + i}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <label
-                className={`flex items-start gap-3 p-3 border rounded-md cursor-pointer hover:bg-amazon-background transition-colors ${
-                  paymentMethod === "cod"
-                    ? "bg-gray-50 border-amazon-orange ring-1 ring-amazon-orange"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="payment"
-                  value="cod"
-                  checked={paymentMethod === "cod"}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="mt-1"
-                />
-                <div>
-                  <span className="font-bold block text-sm">
-                    Cash on Delivery
-                  </span>
-                  <span className="text-xs text-gray-600">
-                    Pay when you receive
-                  </span>
-                </div>
-              </label>
             </div>
-          </form>
-        </div>
+          </>
+        )}
+
+        {/* ── EDIT ORDER MODAL ──────────────────────────────────────── */}
+        {showEditModal && (
+          <EditOrderModal
+            cart={cart}
+            shippingAddress={shippingAddress}
+            onUpdateQuantity={updateQuantity}
+            onUpdateAddress={handleUpdateAddress}
+            onClose={() => setShowEditModal(false)}
+          />
+        )}
       </div>
-
-      {/* Right Side: Order Summary */}
-      <div className="w-full lg:w-[300px]">
-        <div className="box p-4 sticky top-10">
-          <button
-            onClick={handlePlaceOrder}
-            disabled={cart.length === 0 || loading}
-            className={`w-full py-2 mb-4 rounded-md text-sm font-normal shadow-sm
-    ${cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "btn-primary"}`}
-          >
-            {cart.length === 0 ? "Cart is empty" : "Place your order"}
-          </button>
-
-          <p className="text-[10px] text-gray-500 text-center mb-4 border-b border-gray-300 pb-4 leading-tight">
-            By placing your order, you agree to gadgetory's{" "}
-            <a href="#" className="text-amazon-blue hover:underline">
-              privacy notice
-            </a>{" "}
-            and{" "}
-            <a href="#" className="text-amazon-blue hover:underline">
-              conditions of use
-            </a>
-            .
-          </p>
-
-          <h3 className="font-bold text-lg mb-4">Order Summary</h3>
-          <div className="space-y-2 text-xs text-gray-600">
-            <div className="flex justify-between">
-              <span>Items ({getItemCount()}):</span>
-              <span>৳{getCartTotal().toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Delivery Fee:</span>
-              {deliveryFee === 0 ? (
-                <span className="text-green-600 font-bold">FREE</span>
-              ) : (
-                <span>৳{deliveryFee}</span>
-              )}
-            </div>
-            <div className="flex justify-between border-b border-gray-200 pb-2">
-              <span>Service Fee:</span>
-              <span>৳{serviceFee.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between text-amazon-orange text-lg font-bold pt-2">
-              <span>Order Total:</span>
-              <span>৳{orderTotal.toLocaleString()}</span>
-            </div>
-          </div>
-
-          <div className="mt-4 pt-4 border-t border-gray-200 text-xs">
-            <p className="text-green-600 font-bold mb-2">
-              <Truck className="w-4 h-4 inline mr-1" />
-              FREE Delivery on orders over ৳50,000
-            </p>
-            <p className="text-gray-600">
-              <ShieldCheck className="w-4 h-4 inline mr-1" />
-              Secure checkout
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {showEditModal && (
-        <EditOrderModal
-          cart={cart}
-          shippingAddress={shippingAddress}
-          onUpdateQuantity={updateQuantity}
-          onUpdateAddress={handleUpdateAddress}
-          onClose={() => setShowEditModal(false)}
-        />
-      )}
     </main>
   );
 }
