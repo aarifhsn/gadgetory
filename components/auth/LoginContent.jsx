@@ -23,7 +23,7 @@ export default function LoginContent() {
 
         <div className="mt-4 text-xs">
           <p>
-            By continuing, you agree to Gadgets BD's
+            By continuing, you agree to gadgetory's
             <a href="#" className="text-amazon-blue hover:underline">
               Conditions of Use
             </a>
@@ -54,7 +54,7 @@ export default function LoginContent() {
           </div>
           <div className="relative flex justify-center text-xs">
             <span className="bg-white px-2 text-gray-500">
-              New to Gadgets BD?
+              New to gadgetory?
             </span>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function LoginContent() {
           href="/register"
           className="block w-full py-1.5 border border-gray-400 rounded-sm text-center text-sm hover:bg-gray-50 transition-colors"
         >
-          Create your Gadgets BD account
+          Create your gadgetory account
         </Link>
       </div>
     </div>

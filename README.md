@@ -1,4 +1,4 @@
-# GadgetsBD - E-commerce Platform
+# gadgetory - E-commerce Platform
 
 A full-stack e-commerce platform built with Next.js 14, MongoDB, and NextAuth.js, featuring dual user roles (Shop Owners & Customers), real-time inventory management, and comprehensive order processing.
 
@@ -258,8 +258,8 @@ Before running this project, ensure you have:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/aarifhsn/gadgetsbd
-cd gadgetsbd
+git clone https://github.com/aarifhsn/gadgetory
+cd gadgetory
 ```
 
 ### 2. Install dependencies
@@ -274,7 +274,7 @@ Create a `.env.local` file in the root directory:
 
 ```env
 # MongoDB
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/gadgetsbd
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/gadgetory
 
 # NextAuth
 AUTH_SECRET=your-secret-key-here
@@ -427,4 +427,5 @@ This project is created for educational purposes as part of Learn with Sumit - B
 ---
 
 **Made with ❤️ by [Arif Hassan]**
+
 # gadgetory

@@ -41,7 +41,7 @@ export async function generateMetadata({ params }) {
   const { shop } = result.data;
 
   return {
-    title: `${shop.shopName || shop.name} - Gadgets BD`,
+    title: `${shop.shopName || shop.name} - gadgetory`,
     description:
       shop.shopDescription || `Shop for quality products at ${shop.shopName}`,
   };

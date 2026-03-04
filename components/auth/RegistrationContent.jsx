@@ -27,7 +27,7 @@ export default function RegistrationContent() {
 
         <div className="mt-4 text-xs">
           <p>
-            By creating an account, you agree to Gadgets BD's
+            By creating an account, you agree to gadgetory's
             <a href="#" className="text-amazon-blue hover:underline">
               Conditions of Use
             </a>
@@ -63,7 +63,7 @@ export default function RegistrationContent() {
                 <p className="font-bold mb-1">Shop Owner Registration</p>
                 <p>
                   After registration, you'll be able to set up your shop
-                  profile, add products, and start selling on Gadgets BD
+                  profile, add products, and start selling on gadgetory
                   marketplace.
                 </p>
               </div>

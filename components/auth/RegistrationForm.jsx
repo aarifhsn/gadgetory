@@ -199,7 +199,7 @@ export default function RegistrationForm({ userType, setUserType }) {
           disabled={loading}
           className="w-full py-1.5 a-button-primary text-sm font-medium rounded-sm cursor-pointer"
         >
-          {loading ? "Creating account..." : "Create your Gadgetsbd account"}
+          {loading ? "Creating account..." : "Create your gadgetory account"}
         </button>
       </form>
     </>

@@ -20,7 +20,7 @@ export function generateInvoicePDF(order, options = { download: true }) {
   // HEADER
   doc.setFontSize(20);
   doc.setFont("helvetica", "bold");
-  doc.text("GADGETS BD", marginX, y);
+  doc.text("gadgetory", marginX, y);
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
@@ -64,7 +64,7 @@ export function generateInvoicePDF(order, options = { download: true }) {
   }
 
   doc.text(
-    `Email: ${order.shopInfo?.email || "support@gadgetsbd.com"}`,
+    `Email: ${order.shopInfo?.email || "support@gadgetory.com"}`,
     rightColumnX,
     y + 26,
   );
@@ -122,7 +122,7 @@ export function generateInvoicePDF(order, options = { download: true }) {
   // FOOTER
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
-  doc.text("Thank you for shopping with Gadgets BD!", marginX, 285);
+  doc.text("Thank you for shopping with gadgetory!", marginX, 285);
 
   // 🔹 Client-side download
   if (options.download) {

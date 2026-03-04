@@ -118,7 +118,7 @@ export default function BuyNowSection({ product }) {
             </p>
             <p className="mb-1">
               <Truck className="w-4 h-4 inline mr-1" />
-              Ships from Gadgets BD
+              Ships from gadgetory
             </p>
             <p>
               <Package className="w-4 h-4 inline mr-1" />

@@ -197,7 +197,7 @@ export async function generateMetadata({ params }) {
 
   if (!result?.success || !result?.data) {
     return {
-      title: "Product Not Found | Gadgets BD",
+      title: "Product Not Found | gadgetory",
       robots: { index: false, follow: false },
     };
   }

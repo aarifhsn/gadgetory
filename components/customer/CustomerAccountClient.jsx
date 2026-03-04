@@ -112,67 +112,112 @@ export default function CustomerAccountClient({ user }) {
   };
 
   return (
-    <main className="max-w-[900px] mx-auto w-full p-6">
-      {/* Success Message */}
+    <main className="max-w-[960px] mx-auto w-full px-4 py-10">
+      {/* ── ALERTS ────────────────────────────────────────────────── */}
       {success && (
-        <div className="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded flex items-center gap-2">
-          <span>✓ Account updated successfully!</span>
+        <div className="mb-6 px-5 py-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl flex items-center gap-3 text-sm font-medium">
+          <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+            <svg
+              className="w-3 h-3 text-emerald-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={3}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          Account updated successfully!
         </div>
       )}
-
-      {/* Error Message */}
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded">
+        <div className="mb-6 px-5 py-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl flex items-center gap-3 text-sm font-medium">
+          <div className="w-5 h-5 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+            <svg
+              className="w-3 h-3 text-rose-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={3}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
           {error}
         </div>
       )}
 
-      <div className="mb-8 flex justify-between items-end">
+      {/* ── PAGE HEADER ───────────────────────────────────────────── */}
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-normal">My Account</h1>
-          <p className="text-sm text-gray-600">
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-1 h-7 rounded-full bg-[#D4A853]" />
+            <h1 className="text-2xl font-black text-[#1a1a2e] tracking-tight">
+              My Account
+            </h1>
+          </div>
+          <p className="text-sm text-[#1a1a2e]/45 pl-4">
             Manage your personal information and preferences
           </p>
         </div>
-        <div className="flex gap-2">
+
+        {/* Mode toggle */}
+        <div className="flex items-center gap-1 bg-[#F5F3EF] p-1 rounded-xl border border-[#E8E4DD]">
           <button
             onClick={() => setViewMode(true)}
-            className={`px-4 py-2 transition-colors ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold tracking-wide transition-all duration-200 ${
               viewMode
-                ? "bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary text-gray-900 rounded-md text-sm font-medium shadow-sm"
-                : "bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300"
+                ? "bg-white text-[#1a1a2e] shadow-sm border border-[#E8E4DD]"
+                : "text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70"
             }`}
           >
-            <Eye className="w-4 h-4 inline mr-1" />
-            View Mode
+            <Eye className="w-3.5 h-3.5" />
+            View
           </button>
           <button
             onClick={() => setViewMode(false)}
-            className={`px-4 py-2 transition-colors ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold tracking-wide transition-all duration-200 ${
               !viewMode
-                ? "bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary text-gray-900 rounded-md text-sm font-medium shadow-sm"
-                : "bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300"
+                ? "bg-white text-[#1a1a2e] shadow-sm border border-[#E8E4DD]"
+                : "text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70"
             }`}
           >
-            <Pencil className="w-4 h-4 inline mr-1" />
-            Edit Mode
+            <Pencil className="w-3.5 h-3.5" />
+            Edit
           </button>
         </div>
       </div>
 
-      {/* View Mode */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* VIEW MODE                                                   */}
+      {/* ════════════════════════════════════════════════════════════ */}
       {viewMode && (
-        <div className="space-y-6">
-          {/* Account Overview */}
-          <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-            <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-              <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                Account Overview
-              </h2>
+        <div className="space-y-5">
+          {/* ── PROFILE CARD ──────────────────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            {/* Card header band */}
+            <div className="h-20 bg-gradient-to-r from-[#1a1a2e] to-[#2a2a4e] relative">
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 80% 50%, #D4A853 0%, transparent 60%)",
+                }}
+              />
             </div>
-            <div className="p-6">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-20 h-20 bg-amazon-secondary rounded-full flex items-center justify-center overflow-hidden">
+
+            <div className="px-6 pb-6">
+              {/* Avatar — overlaps the band */}
+              <div className="flex items-end justify-between -mt-10 mb-5">
+                <div className="w-20 h-20 rounded-2xl border-4 border-white shadow-md overflow-hidden bg-[#F5F3EF] flex items-center justify-center z-50">
                   {user?.avatar ? (
                     <img
                       src={user.avatar}
@@ -180,108 +225,155 @@ export default function CustomerAccountClient({ user }) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <User className="w-10 h-10 text-white" />
+                    <User className="w-8 h-8 text-[#1a1a2e]/30" />
                   )}
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold">{user?.name}</h3>
-                  <p className="text-sm text-gray-500">Customer Account</p>
-                </div>
+                <button
+                  onClick={() => setViewMode(false)}
+                  className="flex items-center gap-1.5 text-xs font-bold text-[#1a1a2e]/50 hover:text-[#D4A853] transition-colors duration-200"
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                  Edit Profile
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-gray-400 mt-1" />
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      Email Address
-                    </label>
-                    <p className="font-medium">{user?.email}</p>
-                  </div>
-                </div>
+              <h3 className="text-xl font-black text-[#1a1a2e] tracking-tight">
+                {user?.name}
+              </h3>
+              <p className="text-xs text-[#1a1a2e]/35 font-medium tracking-wide uppercase mt-0.5">
+                Customer Account
+              </p>
 
-                <div className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-gray-400 mt-1" />
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      Phone Number
-                    </label>
-                    <p className="font-medium">
-                      {user?.mobile?.countryCode}{" "}
-                      {user?.mobile?.number || "Not set"}
-                    </p>
+              {/* Info grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                {[
+                  { icon: Mail, label: "Email Address", value: user?.email },
+                  {
+                    icon: Phone,
+                    label: "Phone Number",
+                    value:
+                      `${user?.mobile?.countryCode || ""} ${user?.mobile?.number || "Not set"}`.trim(),
+                  },
+                  {
+                    icon: MapPin,
+                    label: "City",
+                    value: user?.city || "Not set",
+                  },
+                  {
+                    icon: MapPin,
+                    label: "Address",
+                    value: user?.address || "Not set",
+                  },
+                ].map(({ icon: Icon, label, value }) => (
+                  <div
+                    key={label}
+                    className="flex items-start gap-3 p-4 bg-[#FAF9F6] rounded-xl border border-[#E8E4DD]"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#D4A853]/10 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-[#D4A853]" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#1a1a2e]/35 mb-0.5">
+                        {label}
+                      </p>
+                      <p className="text-sm font-semibold text-[#1a1a2e]/80">
+                        {value}
+                      </p>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-1" />
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      City
-                    </label>
-                    <p className="font-medium">{user?.city || "Not set"}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-1" />
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      Address
-                    </label>
-                    <p className="font-medium">{user?.address || "Not set"}</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Account Actions */}
-          {/* Recent Orders */}
-          <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-            <div className="bg-gray-50 px-6 py-3 border-b border-gray-300 flex justify-between items-center">
-              <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                Recent Orders
-              </h2>
+          {/* ── STATS ROW ─────────────────────────────────────────── */}
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              {
+                value: user.recentOrders?.length || 0,
+                label: "Recent Orders",
+                color: "text-[#1a1a2e]",
+              },
+              {
+                value:
+                  user.recentOrders?.filter((o) => o.status === "delivered")
+                    .length || 0,
+                label: "Delivered",
+                color: "text-emerald-600",
+              },
+              {
+                value:
+                  user.recentOrders?.filter(
+                    (o) => o.status === "pending" || o.status === "shipped",
+                  ).length || 0,
+                label: "In Progress",
+                color: "text-[#D4A853]",
+              },
+            ].map(({ value, label, color }) => (
+              <div
+                key={label}
+                className="bg-white border border-[#E8E4DD] rounded-2xl p-5 text-center shadow-sm"
+              >
+                <p className={`text-3xl font-black tracking-tight ${color}`}>
+                  {value}
+                </p>
+                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#1a1a2e]/35 mt-1">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* ── RECENT ORDERS ─────────────────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+                <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                  Recent Orders
+                </h2>
+              </div>
               <a
                 href="/orders"
-                className="text-xs text-amazon-blue hover:underline"
+                className="text-[11px] font-bold text-[#D4A853] hover:underline underline-offset-4 tracking-wide"
               >
-                View All
+                View All →
               </a>
             </div>
-            <div className="divide-y divide-gray-100">
+
+            <div className="divide-y divide-[#F5F3EF]">
               {user.recentOrders?.length === 0 ? (
-                <p className="p-6 text-sm text-gray-500">No orders yet.</p>
+                <p className="p-8 text-sm text-[#1a1a2e]/35 text-center">
+                  No orders yet.
+                </p>
               ) : (
                 user.recentOrders?.map((order) => (
                   <div
                     key={order._id}
-                    className="p-4 flex justify-between items-center"
+                    className="px-6 py-4 flex justify-between items-center hover:bg-[#FAF9F6] transition-colors duration-150"
                   >
                     <div>
-                      <p className="text-sm font-bold">#{order.orderNumber}</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-sm font-black text-[#1a1a2e]">
+                        #{order.orderNumber}
+                      </p>
+                      <p className="text-xs text-[#1a1a2e]/35 mt-0.5">
                         {new Date(order.createdAt).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
                         })}
                       </p>
-                      <p className="text-xs text-gray-600 mt-1">
+                      <p className="text-xs text-[#1a1a2e]/45 mt-0.5">
                         {order.items.length} item
                         {order.items.length > 1 ? "s" : ""}
                       </p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-bold">
+                    <div className="text-right flex flex-col items-end gap-2">
+                      <p className="text-sm font-black text-[#1a1a2e]">
                         ৳{order.total.toLocaleString()}
                       </p>
                       <span
-                        className={`text-xs px-2 py-0.5 rounded-full font-bold capitalize ${
-                          statusStyles[order.status] ||
-                          "bg-gray-100 text-gray-700"
-                        }`}
+                        className={`text-[10px] font-black tracking-[0.15em] uppercase px-3 py-1 rounded-full capitalize ${statusStyles[order.status] || "bg-[#F5F3EF] text-[#1a1a2e]/50"}`}
                       >
                         {order.status}
                       </span>
@@ -291,46 +383,58 @@ export default function CustomerAccountClient({ user }) {
               )}
             </div>
           </div>
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-white border border-gray-300 rounded shadow-sm p-4 text-center">
-              <p className="text-2xl font-bold text-amazon-blue">
-                {user.recentOrders?.length || 0}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">Recent Orders</p>
-            </div>
-            <div className="bg-white border border-gray-300 rounded shadow-sm p-4 text-center">
-              <p className="text-2xl font-bold text-green-600">
-                {user.recentOrders?.filter((o) => o.status === "delivered")
-                  .length || 0}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">Delivered</p>
-            </div>
-            <div className="bg-white border border-gray-300 rounded shadow-sm p-4 text-center">
-              <p className="text-2xl font-bold text-yellow-600">
-                {user.recentOrders?.filter(
-                  (o) => o.status === "pending" || o.status === "shipped",
-                ).length || 0}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">In Progress</p>
-            </div>
-          </div>
+
+          {/* ── QUICK ACTIONS ─────────────────────────────────────── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Link
               href="/orders"
-              className="p-4 border border-gray-200 rounded hover:border-amazon-secondary hover:shadow-sm transition"
+              className="group p-5 bg-white border border-[#E8E4DD] hover:border-[#D4A853]/40 rounded-2xl hover:shadow-md transition-all duration-300"
             >
-              <h3 className="font-bold mb-1">Your Orders</h3>
-              <p className="text-sm text-gray-600">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-black text-[#1a1a2e]">
+                  Your Orders
+                </h3>
+                <svg
+                  className="w-4 h-4 text-[#1a1a2e]/25 group-hover:text-[#D4A853] group-hover:translate-x-0.5 transition-all duration-200"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+              <p className="text-xs text-[#1a1a2e]/45">
                 Track, return, or buy things again
               </p>
             </Link>
             <button
               onClick={() => setViewMode(false)}
-              className="p-4 border border-gray-200 rounded hover:border-amazon-secondary hover:shadow-sm transition text-left"
+              className="group text-left p-5 bg-white border border-[#E8E4DD] hover:border-[#D4A853]/40 rounded-2xl hover:shadow-md transition-all duration-300"
             >
-              <h3 className="font-bold mb-1">Edit Profile</h3>
-              <p className="text-sm text-gray-600">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-black text-[#1a1a2e]">
+                  Edit Profile
+                </h3>
+                <svg
+                  className="w-4 h-4 text-[#1a1a2e]/25 group-hover:text-[#D4A853] group-hover:translate-x-0.5 transition-all duration-200"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+              <p className="text-xs text-[#1a1a2e]/45">
                 Update your personal info and address
               </p>
             </button>
@@ -338,157 +442,167 @@ export default function CustomerAccountClient({ user }) {
         </div>
       )}
 
-      {/* Edit Mode */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* EDIT MODE                                                   */}
+      {/* ════════════════════════════════════════════════════════════ */}
       {!viewMode && (
-        <div>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Personal Information */}
-            <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-                <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                  Personal Information
-                </h2>
-              </div>
-              <div className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Profile Picture
-                  </label>
-                  <div className="flex items-center gap-4">
-                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border-2 border-gray-300">
-                      {imagePreview ? (
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <User className="w-12 h-12 text-gray-400" />
-                      )}
-                    </div>
-                    <label className="cursor-pointer px-4 py-2 bg-white border border-gray-400 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
-                      <Camera className="w-4 h-4" />
-                      Change Photo
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="mobileNumber"
-                    value={formData.mobileNumber}
-                    onChange={handleChange}
-                    placeholder="1712345678"
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  />
-                </div>
-              </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* ── PERSONAL INFORMATION ──────────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+              <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+              <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                Personal Information
+              </h2>
             </div>
 
-            {/* Location */}
-            <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-                <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                  Location
-                </h2>
-              </div>
-              <div className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-bold mb-1">City</label>
-                  <select
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  >
-                    <option>Dhaka</option>
-                    <option>Chittagong</option>
-                    <option>Sylhet</option>
-                    <option>Rajshahi</option>
-                    <option>Khulna</option>
-                    <option>Barisal</option>
-                    <option>Rangpur</option>
-                    <option>Mymensingh</option>
-                  </select>
+            <div className="p-6 space-y-5">
+              {/* Avatar upload */}
+              <div className="flex items-center gap-5">
+                <div className="w-20 h-20 rounded-2xl border-2 border-[#E8E4DD] overflow-hidden bg-[#F5F3EF] flex items-center justify-center shrink-0">
+                  {imagePreview ? (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="w-8 h-8 text-[#1a1a2e]/20" />
+                  )}
                 </div>
-
                 <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Address
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 bg-[#FAF9F6] border border-[#E8E4DD] hover:border-[#D4A853]/50 rounded-xl text-xs font-bold text-[#1a1a2e]/60 hover:text-[#1a1a2e] transition-all duration-200">
+                    <Camera className="w-3.5 h-3.5" />
+                    {uploadingAvatar ? "Uploading..." : "Change Photo"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
                   </label>
-                  <textarea
-                    name="address"
-                    value={formData.address}
+                  <p className="text-[11px] text-[#1a1a2e]/30 mt-1.5">
+                    Max 2MB · JPG, PNG
+                  </p>
+                </div>
+              </div>
+
+              {/* Fields */}
+              {[
+                {
+                  label: "Full Name",
+                  name: "name",
+                  type: "text",
+                  required: true,
+                  placeholder: "Your full name",
+                },
+                {
+                  label: "Email Address",
+                  name: "email",
+                  type: "email",
+                  required: true,
+                  placeholder: "you@example.com",
+                },
+                {
+                  label: "Phone Number",
+                  name: "mobileNumber",
+                  type: "tel",
+                  required: false,
+                  placeholder: "1712345678",
+                },
+              ].map(({ label, name, type, required, placeholder }) => (
+                <div key={name}>
+                  <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                    {label}{" "}
+                    {required && <span className="text-[#D4A853]">*</span>}
+                  </label>
+                  <input
+                    type={type}
+                    name={name}
+                    value={formData[name]}
                     onChange={handleChange}
-                    rows="3"
-                    placeholder="Enter your full address"
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
+                    required={required}
+                    placeholder={placeholder}
+                    className="w-full px-4 py-3 bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all duration-200"
                   />
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── LOCATION ──────────────────────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+              <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+              <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                Location
+              </h2>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-end pt-4">
-              <button
-                type="button"
-                onClick={() => setViewMode(true)}
-                className="px-6 py-2 border border-gray-400 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading || uploadingAvatar}
-                className="px-6 py-2 bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary rounded-md text-sm font-bold shadow-sm transition-colors disabled:opacity-50"
-              >
-                {uploadingAvatar
-                  ? "Uploading..."
-                  : loading
-                    ? "Saving..."
-                    : "Save Changes"}
-              </button>
+            <div className="p-6 space-y-5">
+              <div>
+                <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                  City
+                </label>
+                <select
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all duration-200 appearance-none"
+                >
+                  {[
+                    "Dhaka",
+                    "Chittagong",
+                    "Sylhet",
+                    "Rajshahi",
+                    "Khulna",
+                    "Barisal",
+                    "Rangpur",
+                    "Mymensingh",
+                  ].map((city) => (
+                    <option key={city}>{city}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                  Address
+                </label>
+                <textarea
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  rows="3"
+                  placeholder="Enter your full address"
+                  className="w-full px-4 py-3 bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all duration-200 resize-none"
+                />
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          {/* ── FORM ACTIONS ──────────────────────────────────────── */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-end pt-2">
+            <button
+              type="button"
+              onClick={() => setViewMode(true)}
+              className="px-6 py-3 border border-[#E8E4DD] hover:border-[#1a1a2e]/20 bg-white rounded-xl text-sm font-bold text-[#1a1a2e]/50 hover:text-[#1a1a2e] transition-all duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading || uploadingAvatar}
+              className="px-8 py-3 bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] rounded-xl text-sm font-black tracking-wide shadow-md shadow-[#1a1a2e]/10 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {uploadingAvatar
+                ? "Uploading..."
+                : loading
+                  ? "Saving..."
+                  : "Save Changes"}
+            </button>
+          </div>
+        </form>
       )}
     </main>
   );

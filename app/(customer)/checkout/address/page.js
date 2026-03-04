@@ -116,266 +116,416 @@ export default function AddressPage() {
   const orderTotal = getCartTotal() + serviceFee + deliveryFee;
 
   return (
-    <main className="checkout-container flex-1 py-10 px-4">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-        {/* Left Side: Address Form */}
-        <div className="flex-1">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold mb-2">Shipping Address</h1>
-            <p className="text-sm text-gray-600">
-              Please provide your shipping details
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="box p-6 space-y-6">
-            {/* Full Name */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-bold mb-2">
-                Full Name <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="John Doe"
-                className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-2 focus:ring-amazon-blue ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.name && (
-                <p className="text-red-600 text-xs mt-1">{errors.name}</p>
-              )}
-            </div>
-
-            {/* Email (Optional) */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-bold mb-2">
-                Email <span className="text-gray-400 text-xs">(Optional)</span>
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="john@example.com"
-                className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-2 focus:ring-amazon-blue ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.email && (
-                <p className="text-red-600 text-xs mt-1">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Phone Number */}
-            <div>
-              <label htmlFor="phone" className="block text-sm font-bold mb-2">
-                Phone Number <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="+880 1712-345678"
-                className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-2 focus:ring-amazon-blue ${
-                  errors.phone ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.phone && (
-                <p className="text-red-600 text-xs mt-1">{errors.phone}</p>
-              )}
-            </div>
-
-            {/* Address */}
-            <div>
-              <label htmlFor="address" className="block text-sm font-bold mb-2">
-                Street Address <span className="text-red-600">*</span>
-              </label>
-              <textarea
-                id="address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="123 Main St, Apartment 4B"
-                rows="3"
-                className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-2 focus:ring-amazon-blue ${
-                  errors.address ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.address && (
-                <p className="text-red-600 text-xs mt-1">{errors.address}</p>
-              )}
-            </div>
-
-            {/* City and Postal Code */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="city" className="block text-sm font-bold mb-2">
-                  City <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  placeholder="Dhaka"
-                  className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-2 focus:ring-amazon-blue ${
-                    errors.city ? "border-red-500" : "border-gray-300"
+    <main className="flex-1 py-10 px-4 md:px-16 bg-[#FAF9F6]">
+      <div className="max-w-6xl mx-auto">
+        {/* ── CHECKOUT PROGRESS ─────────────────────────────────────── */}
+        <div className="flex items-center justify-center gap-2 mb-10">
+          {[
+            { step: 1, label: "Cart" },
+            { step: 2, label: "Address", active: true },
+            { step: 3, label: "Payment" },
+          ].map(({ step, label, active }, idx) => (
+            <div key={step} className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                    active
+                      ? "bg-[#1a1a2e] text-white"
+                      : step < 2
+                        ? "bg-[#D4A853] text-[#1a1a2e]"
+                        : "bg-[#E8E4DD] text-[#1a1a2e]/30"
                   }`}
-                />
-                {errors.city && (
-                  <p className="text-red-600 text-xs mt-1">{errors.city}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="postalCode"
-                  className="block text-sm font-bold mb-2"
                 >
-                  Postal Code <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  name="postalCode"
-                  value={formData.postalCode}
-                  onChange={handleChange}
-                  placeholder="1212"
-                  maxLength="4"
-                  className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-2 focus:ring-amazon-blue ${
-                    errors.postalCode ? "border-red-500" : "border-gray-300"
-                  }`}
-                />
-                {errors.postalCode && (
-                  <p className="text-red-600 text-xs mt-1">
-                    {errors.postalCode}
-                  </p>
-                )}
+                  {step < 2 ? (
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  ) : (
+                    step
+                  )}
+                </div>
+                <span
+                  className={`text-xs font-bold tracking-wide ${active ? "text-[#1a1a2e]" : step < 2 ? "text-[#D4A853]" : "text-[#1a1a2e]/25"}`}
+                >
+                  {label}
+                </span>
               </div>
-            </div>
-
-            {/* Country */}
-            <div>
-              <label htmlFor="country" className="block text-sm font-bold mb-2">
-                Country <span className="text-red-600">*</span>
-              </label>
-              <select
-                id="country"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-2 focus:ring-amazon-blue ${
-                  errors.country ? "border-red-500" : "border-gray-300"
-                }`}
-              >
-                <option value="Bangladesh">Bangladesh</option>
-                <option value="India">India</option>
-                <option value="Pakistan">Pakistan</option>
-                <option value="Nepal">Nepal</option>
-                <option value="Sri Lanka">Sri Lanka</option>
-              </select>
-              {errors.country && (
-                <p className="text-red-600 text-xs mt-1">{errors.country}</p>
+              {idx < 2 && (
+                <div
+                  className={`w-12 h-px ${step < 2 ? "bg-[#D4A853]" : "bg-[#E8E4DD]"}`}
+                />
               )}
             </div>
-
-            {/* Saved Addresses Info Box */}
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-4 flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm">
-                <p className="font-bold text-blue-900 mb-1">
-                  Your address will be saved
-                </p>
-                <p className="text-blue-700 text-xs">
-                  This address will be saved for future orders to make checkout
-                  faster.
-                </p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4">
-              <button
-                type="submit"
-                className="flex-1 py-3 btn-primary rounded-md text-sm font-medium"
-              >
-                Continue to Payment
-              </button>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="flex-1 py-3 bg-white border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50"
-              >
-                Back to Cart
-              </button>
-            </div>
-          </form>
+          ))}
         </div>
 
-        {/* Right Side: Order Summary */}
-        <div className="w-full lg:w-[300px]">
-          <div className="box p-4 sticky top-10">
-            <h3 className="font-bold text-lg mb-4">Order Summary</h3>
-            <div className="space-y-2 text-xs text-gray-600 mb-4">
-              <div className="flex justify-between">
-                <span>Items ({cart.length}):</span>
-                <span>৳{getCartTotal().toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Delivery Fee:</span>
-                {deliveryFee === 0 ? (
-                  <span className="text-green-600 font-bold">FREE</span>
-                ) : (
-                  <span>৳{deliveryFee}</span>
-                )}
-              </div>
-              <div className="flex justify-between border-b border-gray-200 pb-2">
-                <span>Service Fee:</span>
-                <span>৳{serviceFee.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-amazon-orange text-lg font-bold pt-2">
-                <span>Order Total:</span>
-                <span>৳{orderTotal.toLocaleString()}</span>
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          {/* ── LEFT: ADDRESS FORM ──────────────────────────────────── */}
+          <div className="flex-1 min-w-0">
+            {/* Section header */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-1 h-7 rounded-full bg-[#D4A853]" />
+              <div>
+                <h1 className="text-2xl font-black text-[#1a1a2e] tracking-tight">
+                  Shipping Address
+                </h1>
+                <p className="text-xs text-[#1a1a2e]/35 mt-0.5">
+                  Please provide your delivery details
+                </p>
               </div>
             </div>
 
-            {/* Cart Items Preview */}
-            <div className="border-t border-gray-200 pt-4">
-              <h4 className="font-bold text-sm mb-3">Items in Cart:</h4>
-              <div className="space-y-3 max-h-60 overflow-y-auto">
-                {cart.map((item) => (
-                  <div key={item.id} className="flex gap-2 text-xs">
-                    <div className="w-12 h-12 bg-gray-100 flex-shrink-0 relative">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">{item.name}</p>
-                      <p className="text-gray-600">Qty: {item.quantity}</p>
-                      <p className="text-amazon-orange font-bold">
-                        ৳{(item.price * item.quantity).toLocaleString()}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* ── CONTACT INFO ────────────────────────────────────── */}
+              <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+                <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+                  <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+                  <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                    Contact Information
+                  </h2>
+                </div>
+                <div className="p-6 space-y-4">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                      Full Name <span className="text-[#D4A853]">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="John Doe"
+                      className={`w-full px-4 py-3 bg-[#FAF9F6] border rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:ring-2 focus:ring-[#D4A853]/15 transition-all duration-200 ${
+                        errors.name
+                          ? "border-rose-300 bg-rose-50/30"
+                          : "border-[#E8E4DD] focus:border-[#D4A853]"
+                      }`}
+                    />
+                    {errors.name && (
+                      <p className="text-rose-500 text-[11px] mt-1.5 font-medium">
+                        {errors.name}
                       </p>
+                    )}
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                      Email{" "}
+                      <span className="text-[#1a1a2e]/25 font-normal">
+                        (Optional)
+                      </span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="you@example.com"
+                      className={`w-full px-4 py-3 bg-[#FAF9F6] border rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:ring-2 focus:ring-[#D4A853]/15 transition-all duration-200 ${
+                        errors.email
+                          ? "border-rose-300 bg-rose-50/30"
+                          : "border-[#E8E4DD] focus:border-[#D4A853]"
+                      }`}
+                    />
+                    {errors.email && (
+                      <p className="text-rose-500 text-[11px] mt-1.5 font-medium">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                      Phone Number <span className="text-[#D4A853]">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+880 1712-345678"
+                      className={`w-full px-4 py-3 bg-[#FAF9F6] border rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:ring-2 focus:ring-[#D4A853]/15 transition-all duration-200 ${
+                        errors.phone
+                          ? "border-rose-300 bg-rose-50/30"
+                          : "border-[#E8E4DD] focus:border-[#D4A853]"
+                      }`}
+                    />
+                    {errors.phone && (
+                      <p className="text-rose-500 text-[11px] mt-1.5 font-medium">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* ── DELIVERY DETAILS ────────────────────────────────── */}
+              <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+                <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+                  <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+                  <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                    Delivery Details
+                  </h2>
+                </div>
+                <div className="p-6 space-y-4">
+                  {/* Street Address */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                      Street Address <span className="text-[#D4A853]">*</span>
+                    </label>
+                    <textarea
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      placeholder="123 Main St, Apartment 4B"
+                      rows="3"
+                      className={`w-full px-4 py-3 bg-[#FAF9F6] border rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:ring-2 focus:ring-[#D4A853]/15 transition-all duration-200 resize-none ${
+                        errors.address
+                          ? "border-rose-300 bg-rose-50/30"
+                          : "border-[#E8E4DD] focus:border-[#D4A853]"
+                      }`}
+                    />
+                    {errors.address && (
+                      <p className="text-rose-500 text-[11px] mt-1.5 font-medium">
+                        {errors.address}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* City + Postal Code */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                        City <span className="text-[#D4A853]">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="Dhaka"
+                        className={`w-full px-4 py-3 bg-[#FAF9F6] border rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:ring-2 focus:ring-[#D4A853]/15 transition-all duration-200 ${
+                          errors.city
+                            ? "border-rose-300 bg-rose-50/30"
+                            : "border-[#E8E4DD] focus:border-[#D4A853]"
+                        }`}
+                      />
+                      {errors.city && (
+                        <p className="text-rose-500 text-[11px] mt-1.5 font-medium">
+                          {errors.city}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                        Postal Code <span className="text-[#D4A853]">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="postalCode"
+                        value={formData.postalCode}
+                        onChange={handleChange}
+                        placeholder="1212"
+                        maxLength="4"
+                        className={`w-full px-4 py-3 bg-[#FAF9F6] border rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:ring-2 focus:ring-[#D4A853]/15 transition-all duration-200 ${
+                          errors.postalCode
+                            ? "border-rose-300 bg-rose-50/30"
+                            : "border-[#E8E4DD] focus:border-[#D4A853]"
+                        }`}
+                      />
+                      {errors.postalCode && (
+                        <p className="text-rose-500 text-[11px] mt-1.5 font-medium">
+                          {errors.postalCode}
+                        </p>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            <div className="mt-4 pt-4 border-t border-gray-200 text-xs text-gray-600">
-              <p className="mb-2">
-                <span className="font-bold">Note:</span> Please provide accurate
-                delivery information to ensure smooth delivery.
-              </p>
+                  {/* Country */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                      Country <span className="text-[#D4A853]">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        name="country"
+                        value={formData.country}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 bg-[#FAF9F6] border rounded-xl text-sm text-[#1a1a2e] outline-none focus:ring-2 focus:ring-[#D4A853]/15 transition-all duration-200 appearance-none cursor-pointer ${
+                          errors.country
+                            ? "border-rose-300"
+                            : "border-[#E8E4DD] focus:border-[#D4A853]"
+                        }`}
+                      >
+                        {[
+                          "Bangladesh",
+                          "India",
+                          "Pakistan",
+                          "Nepal",
+                          "Sri Lanka",
+                        ].map((c) => (
+                          <option key={c}>{c}</option>
+                        ))}
+                      </select>
+                      <svg
+                        className="w-3.5 h-3.5 text-[#1a1a2e]/30 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                    {errors.country && (
+                      <p className="text-rose-500 text-[11px] mt-1.5 font-medium">
+                        {errors.country}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* ── ADDRESS SAVE NOTICE ─────────────────────────────── */}
+              <div className="flex items-start gap-3 p-4 bg-[#1a1a2e]/3 border border-[#1a1a2e]/8 rounded-2xl">
+                <div className="w-8 h-8 rounded-xl bg-[#D4A853]/10 flex items-center justify-center shrink-0">
+                  <MapPin className="w-4 h-4 text-[#D4A853]" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-[#1a1a2e]/70 mb-0.5">
+                    Address will be saved
+                  </p>
+                  <p className="text-[11px] text-[#1a1a2e]/40 leading-relaxed">
+                    This address will be saved to your account for faster
+                    checkout next time.
+                  </p>
+                </div>
+              </div>
+
+              {/* ── ACTION BUTTONS ──────────────────────────────────── */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <button
+                  type="submit"
+                  className="flex-1 py-4 bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] text-xs font-black tracking-[0.2em] uppercase rounded-xl shadow-lg shadow-[#1a1a2e]/10 transition-all duration-300"
+                >
+                  Continue to Payment →
+                </button>
+                <button
+                  type="button"
+                  onClick={() => router.back()}
+                  className="sm:w-40 py-4 bg-white border border-[#E8E4DD] hover:border-[#1a1a2e]/20 text-xs font-bold text-[#1a1a2e]/50 hover:text-[#1a1a2e] rounded-xl transition-all duration-200"
+                >
+                  ← Back to Cart
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* ── RIGHT: ORDER SUMMARY ──────────────────────────────── */}
+          <div className="w-full lg:w-80 shrink-0 sticky top-20">
+            <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+              <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+                <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+                <h3 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                  Order Summary
+                </h3>
+              </div>
+
+              <div className="p-6 space-y-5">
+                {/* Cart items preview */}
+                <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
+                  {cart.map((item) => (
+                    <div key={item.id} className="flex gap-3">
+                      <div className="w-12 h-12 rounded-xl bg-[#F5F3EF] border border-[#E8E4DD] overflow-hidden shrink-0">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-contain p-1"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-[#1a1a2e] truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-[10px] text-[#1a1a2e]/35 mt-0.5">
+                          Qty: {item.quantity}
+                        </p>
+                        <p className="text-xs font-black text-[#1a1a2e] mt-0.5">
+                          ৳{(item.price * item.quantity).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Price breakdown */}
+                <div className="border-t border-[#E8E4DD] pt-4 space-y-2.5">
+                  {[
+                    {
+                      label: `Items (${cart.length})`,
+                      value: `৳${getCartTotal().toLocaleString()}`,
+                    },
+                    {
+                      label: "Delivery Fee",
+                      value: deliveryFee === 0 ? "FREE" : `৳${deliveryFee}`,
+                      highlight: deliveryFee === 0,
+                    },
+                    {
+                      label: "Service Fee",
+                      value: `৳${serviceFee.toLocaleString()}`,
+                    },
+                  ].map(({ label, value, highlight }) => (
+                    <div
+                      key={label}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="text-xs text-[#1a1a2e]/40 font-medium">
+                        {label}
+                      </span>
+                      <span
+                        className={`text-xs font-bold ${highlight ? "text-emerald-600" : "text-[#1a1a2e]"}`}
+                      >
+                        {value}
+                      </span>
+                    </div>
+                  ))}
+
+                  <div className="flex items-center justify-between pt-3 border-t border-[#E8E4DD]">
+                    <span className="text-sm font-black text-[#1a1a2e]">
+                      Order Total
+                    </span>
+                    <span className="text-xl font-black text-[#1a1a2e]">
+                      ৳{orderTotal.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Note */}
+                <div className="bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl p-3.5">
+                  <p className="text-[11px] text-[#1a1a2e]/40 leading-relaxed">
+                    <span className="font-bold text-[#1a1a2e]/60">Note: </span>
+                    Please provide accurate delivery information to ensure
+                    smooth delivery.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

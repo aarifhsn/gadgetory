@@ -14,7 +14,7 @@ export default function AuthFooter() {
           </a>
         </div>
         <p className="text-gray-500">
-          &copy; 2025 Gadgets BD - Premium Tech Marketplace. All rights reserved
+          &copy; 2025 gadgetory - Premium Tech Marketplace. All rights reserved
           by LWS.
         </p>
       </div>

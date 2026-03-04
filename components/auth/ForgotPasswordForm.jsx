@@ -68,7 +68,7 @@ export default function ForgotPasswordForm() {
           <div className="a-box p-6 mb-6">
             <h1 className="text-2xl font-normal mb-2">Password assistance</h1>
             <p className="text-sm text-gray-600 mb-6">
-              Enter the email address associated with your Gadgets BD account.
+              Enter the email address associated with your gadgetory account.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">

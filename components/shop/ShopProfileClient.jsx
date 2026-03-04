@@ -212,7 +212,7 @@ export default function ShopProfileClient({ user }) {
         <div>
           <h1 className="text-3xl font-normal">Shop Profile</h1>
           <p className="text-sm text-gray-600">
-            Manage your shop information and appearance on Gadgets BD
+            Manage your shop information and appearance on gadgetory
           </p>
         </div>
         <div className="flex gap-2">

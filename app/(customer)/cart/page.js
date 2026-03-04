@@ -60,221 +60,294 @@ export default function CartPage() {
   }
 
   return (
-    <main className="max-w-[1500px] mx-auto w-full p-4">
-      <div className="flex flex-col lg:flex-row gap-4">
-        {/* Cart Items */}
-        <div className="flex-1">
-          {/* Cart Header */}
-          <div className="bg-white p-4 mb-4 border-b border-gray-300">
-            <h1 className="text-2xl font-normal mb-2">Shopping Cart</h1>
-            <div className="text-sm text-gray-600">
-              <Link href="/" className="text-amazon-blue hover:underline">
-                Continue shopping
+    <main className="max-w-[1500px] mx-auto w-full px-4 md:px-16 py-10">
+      {/* ── EMPTY STATE ───────────────────────────────────────────── */}
+      {cart.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-28 text-center">
+          <div className="w-24 h-24 rounded-3xl bg-[#F5F3EF] border border-[#E8E4DD] flex items-center justify-center mb-6">
+            <ShoppingBag className="w-10 h-10 text-[#1a1a2e]/20" />
+          </div>
+          <h2 className="text-2xl font-black text-[#1a1a2e] tracking-tight mb-2">
+            Your cart is empty
+          </h2>
+          <p className="text-sm text-[#1a1a2e]/40 mb-8 max-w-xs">
+            Looks like you haven't added anything yet. Start exploring our
+            products.
+          </p>
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2 bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] text-xs font-black tracking-[0.2em] uppercase px-8 py-4 rounded-full transition-all duration-300 shadow-lg shadow-[#1a1a2e]/10"
+          >
+            Continue Shopping
+          </Link>
+        </div>
+      )}
+
+      {/* ── CART CONTENT ──────────────────────────────────────────── */}
+      {cart.length > 0 && (
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          {/* ── LEFT: CART ITEMS ──────────────────────────────────── */}
+          <div className="flex-1 min-w-0">
+            {/* Page header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-7 rounded-full bg-[#D4A853]" />
+                <div>
+                  <h1 className="text-2xl font-black text-[#1a1a2e] tracking-tight">
+                    Shopping Cart
+                  </h1>
+                  <p className="text-xs text-[#1a1a2e]/35 mt-0.5">
+                    {itemCount} {itemCount === 1 ? "item" : "items"} in your
+                    cart
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/products"
+                className="text-xs font-bold text-[#D4A853] hover:underline underline-offset-4 tracking-wide"
+              >
+                ← Continue Shopping
               </Link>
+            </div>
+
+            {/* Items list */}
+            <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm divide-y divide-[#F5F3EF]">
+              {cart.map((item) => (
+                <div
+                  key={item.id}
+                  className="p-5 flex gap-5 hover:bg-[#FDFCFA] transition-colors duration-150 group"
+                >
+                  {/* Product image */}
+                  <Link href={`/products/${item.slug}`} className="shrink-0">
+                    <div className="w-28 h-28 rounded-xl overflow-hidden bg-[#F5F3EF] border border-[#E8E4DD] relative">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  </Link>
+
+                  {/* Product details */}
+                  <div className="flex-1 min-w-0">
+                    <Link href={`/products/${item.slug}`}>
+                      <h3 className="text-sm font-bold text-[#1a1a2e] hover:text-[#D4A853] transition-colors duration-150 line-clamp-2 leading-snug mb-1">
+                        {item.name}
+                      </h3>
+                    </Link>
+
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#D4A853]">
+                        {item.category}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-[#1a1a2e]/35 mb-1">
+                      Sold by:{" "}
+                      <span className="text-[#1a1a2e]/55 font-medium">
+                        {item.shopInfo?.name || "Official Store"}
+                      </span>
+                    </p>
+
+                    {isFreeShipping && (
+                      <div className="flex items-center gap-1 mb-3">
+                        <Truck className="w-3 h-3 text-emerald-500" />
+                        <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">
+                          Free Shipping
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Quantity + Remove */}
+                    <div className="flex items-center gap-4 mt-3">
+                      <div className="flex items-center gap-2 bg-[#F5F3EF] border border-[#E8E4DD] rounded-xl px-3 py-1.5">
+                        <button
+                          onClick={() =>
+                            handleQuantityChange(item.id, item.quantity - 1)
+                          }
+                          disabled={item.quantity <= 1}
+                          className="w-5 h-5 flex items-center justify-center text-[#1a1a2e]/50 hover:text-[#1a1a2e] disabled:opacity-20 font-black text-sm transition-colors"
+                        >
+                          −
+                        </button>
+                        <span className="text-sm font-black text-[#1a1a2e] w-5 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            handleQuantityChange(item.id, item.quantity + 1)
+                          }
+                          disabled={item.quantity >= (item.stock || 10)}
+                          className="w-5 h-5 flex items-center justify-center text-[#1a1a2e]/50 hover:text-[#1a1a2e] disabled:opacity-20 font-black text-sm transition-colors"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="text-xs font-bold text-[#1a1a2e]/30 hover:text-rose-500 transition-colors duration-200 tracking-wide"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Price */}
+                  <div className="text-right shrink-0">
+                    <p className="text-lg font-black text-[#1a1a2e] tracking-tight">
+                      ৳{(item.price * item.quantity).toLocaleString()}
+                    </p>
+                    {item.quantity > 1 && (
+                      <p className="text-[11px] text-[#1a1a2e]/30 mt-0.5">
+                        ৳{item.price.toLocaleString()} each
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {/* Subtotal row */}
+              <div className="px-6 py-4 bg-[#FAF9F6] flex items-center justify-between">
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#1a1a2e]/40">
+                  Subtotal ({itemCount} {itemCount === 1 ? "item" : "items"})
+                </span>
+                <span className="text-xl font-black text-[#1a1a2e] tracking-tight">
+                  ৳{subtotal.toLocaleString()}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Cart Items List */}
-          <div className="bg-white">
-            {cart.map((item, index) => (
-              <div
-                key={item.id}
-                className="p-4 border-b border-gray-300 flex gap-4 hover:bg-gray-50"
-              >
-                {/* Product Image */}
-                <div className="w-32 h-32 flex-shrink-0 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover rounded border border-gray-200"
-                  />
-                </div>
+          {/* ── RIGHT: ORDER SUMMARY ──────────────────────────────── */}
+          <div className="lg:w-80 shrink-0 sticky top-20">
+            <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+              {/* Summary header */}
+              <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+                <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+                <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a1a2e]">
+                  Order Summary
+                </h2>
+              </div>
 
-                {/* Product Details */}
-                <div className="flex-1">
-                  <h3 className="font-medium text-base mb-1">
-                    <Link
-                      href={`/products/${item.slug}`}
-                      className="text-amazon-blue hover:text-amazon-orange hover:underline"
-                    >
-                      {item.name}
-                    </Link>
-                  </h3>
-                  <p className="text-sm text-green-700 font-medium">
-                    {getItemCount ? "In Stock" : "Out of Stock"}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">
-                    Sold by: {item.shopInfo?.name || "Official Store"}
-                  </p>
-                  {isFreeShipping && (
-                    <p className="text-xs text-gray-600">
-                      Eligible for FREE Shipping
+              <div className="p-6 space-y-5">
+                {/* Free shipping progress */}
+                {isFreeShipping ? (
+                  <div className="flex items-center gap-2.5 p-3.5 bg-emerald-50 border border-emerald-100 rounded-xl">
+                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <p className="text-xs font-bold text-emerald-700">
+                      Your order qualifies for FREE shipping!
                     </p>
-                  )}
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-4 mt-3">
-                    {/* Quantity Selector */}
-                    <div className="flex items-center gap-2">
-                      <label className="text-xs text-gray-600">Qty:</label>
-                      <select
-                        value={item.quantity}
-                        onChange={(e) =>
-                          handleQuantityChange(item.id, Number(e.target.value))
-                        }
-                        className="border border-gray-400 rounded-md px-2 py-1 text-sm bg-gray-50 outline-none focus:ring-1 focus:ring-amazon-blue"
-                      >
-                        {[...Array(Math.min(item.stock || 10, 10))].map(
-                          (_, i) => (
-                            <option key={i + 1} value={i + 1}>
-                              {i + 1}
-                            </option>
-                          ),
-                        )}
-                      </select>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs text-[#1a1a2e]/45 font-medium">
+                        Add{" "}
+                        <span className="font-black text-[#1a1a2e]">
+                          ৳{(50000 - subtotal).toLocaleString()}
+                        </span>{" "}
+                        for free shipping
+                      </p>
                     </div>
+                    <div className="w-full h-1.5 bg-[#F5F3EF] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-[#D4A853] to-[#c9973d] rounded-full transition-all duration-500"
+                        style={{
+                          width: `${Math.min((subtotal / 50000) * 100, 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
 
-                    <span className="text-gray-300">|</span>
-
-                    {/* Delete Button */}
-                    <button
-                      onClick={() => handleRemoveItem(item.id)}
-                      className="text-sm text-amazon-blue hover:text-amazon-orange hover:underline"
+                {/* Price breakdown */}
+                <div className="space-y-3">
+                  {[
+                    {
+                      label: "Items Total",
+                      value: `৳${subtotal.toLocaleString()}`,
+                    },
+                    {
+                      label: "Delivery Fee",
+                      value: isFreeShipping ? "FREE" : "৳100",
+                      highlight: isFreeShipping,
+                    },
+                    {
+                      label: "Service Fee",
+                      value: `৳${serviceFee.toLocaleString()}`,
+                    },
+                  ].map(({ label, value, highlight }) => (
+                    <div
+                      key={label}
+                      className="flex items-center justify-between"
                     >
-                      Delete
-                    </button>
+                      <span className="text-xs text-[#1a1a2e]/45 font-medium">
+                        {label}
+                      </span>
+                      <span
+                        className={`text-xs font-bold ${highlight ? "text-emerald-600" : "text-[#1a1a2e]"}`}
+                      >
+                        {value}
+                      </span>
+                    </div>
+                  ))}
+
+                  <div className="pt-3 border-t border-[#E8E4DD] flex items-center justify-between">
+                    <span className="text-sm font-black text-[#1a1a2e] tracking-tight">
+                      Estimated Total
+                    </span>
+                    <span className="text-xl font-black text-[#1a1a2e]">
+                      ৳
+                      {(
+                        subtotal +
+                        (isFreeShipping ? 0 : 100) +
+                        serviceFee
+                      ).toLocaleString()}
+                    </span>
                   </div>
                 </div>
 
-                {/* Price */}
-                <div className="text-right">
-                  <p className="text-lg font-bold text-amazon-orange">
-                    ৳{(item.price * item.quantity).toLocaleString()}
-                  </p>
-                  {item.quantity > 1 && (
-                    <p className="text-xs text-gray-600 mt-1">
-                      ৳{item.price.toLocaleString()} each
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
-
-            {/* Subtotal */}
-            <div className="p-4 text-right">
-              <p className="text-lg">
-                Subtotal ({itemCount} {itemCount === 1 ? "item" : "items"}):
-                <span className="font-bold text-amazon-orange ml-2">
-                  ৳{subtotal.toLocaleString()}
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Order Summary Sidebar */}
-        <div className="lg:w-80">
-          <div className="bg-white p-4 border border-gray-300 rounded sticky top-4">
-            {/* Free Shipping Badge */}
-            {isFreeShipping ? (
-              <div className="mb-4">
-                <p className="text-sm mb-2">
-                  <CheckCircle className="w-4 h-4 inline text-green-600 mr-1" />
-                  <span className="text-green-700 font-medium">
-                    Your order qualifies for FREE Shipping!
+                {/* Gift option */}
+                <label className="flex items-center gap-2.5 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    id="gift"
+                    className="w-4 h-4 rounded border-[#E8E4DD] accent-[#D4A853]"
+                  />
+                  <span className="text-xs text-[#1a1a2e]/50 group-hover:text-[#1a1a2e]/70 transition-colors">
+                    This order contains a gift
                   </span>
-                </p>
-              </div>
-            ) : (
-              <div className="mb-4">
-                <p className="text-sm mb-2 text-gray-600">
-                  Add ৳{(50000 - subtotal).toLocaleString()} more for FREE
-                  shipping
-                </p>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-green-600 h-2 rounded-full transition-all"
-                    style={{
-                      width: `${Math.min((subtotal / 50000) * 100, 100)}%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-            )}
-
-            {/* Subtotal */}
-            <div className="mb-4">
-              <p className="text-lg mb-2">
-                Subtotal ({itemCount} {itemCount === 1 ? "item" : "items"}):
-                <span className="font-bold text-amazon-orange ml-2">
-                  ৳{subtotal.toLocaleString()}
-                </span>
-              </p>
-              <div className="flex items-start gap-2 text-xs">
-                <input type="checkbox" id="gift" className="mt-0.5" />
-                <label htmlFor="gift" className="text-gray-700">
-                  This order contains a gift
                 </label>
-              </div>
-            </div>
 
-            {/* Checkout Button */}
-            <button
-              onClick={handleProceedToCheckout}
-              className="w-full py-2 bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary rounded-md text-sm font-bold shadow-sm transition-colors mb-2"
-            >
-              Proceed to Checkout
-            </button>
+                {/* CTA */}
+                <button
+                  onClick={handleProceedToCheckout}
+                  className="w-full py-4 bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] text-xs font-black tracking-[0.2em] uppercase rounded-xl shadow-lg shadow-[#1a1a2e]/10 transition-all duration-300"
+                >
+                  Proceed to Checkout
+                </button>
 
-            {/* Security Info */}
-            <div className="text-xs text-gray-600 mt-4 space-y-2">
-              <p>
-                <ShieldCheck className="w-3 h-3 inline mr-1" />
-                Secure transaction
-              </p>
-              <p>
-                <Truck className="w-3 h-3 inline mr-1" />
-                Ships from Gadgets BD
-              </p>
-            </div>
-
-            {/* Price Breakdown */}
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <h4 className="font-bold text-sm mb-2">Price Details</h4>
-              <div className="space-y-1 text-xs text-gray-600">
-                <div className="flex justify-between">
-                  <span>Items Total:</span>
-                  <span>৳{subtotal.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Delivery Fee:</span>
-                  {isFreeShipping ? (
-                    <span className="text-green-600 font-bold">FREE</span>
-                  ) : (
-                    <span>৳100</span>
-                  )}
-                </div>
-                <div className="flex justify-between">
-                  <span>Service Fee:</span>
-                  <span>{serviceFee.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between font-bold text-sm text-amazon-orange pt-2 border-t border-gray-200">
-                  <span>Estimated Total:</span>
-                  <span>
-                    ৳
-                    {(
-                      subtotal +
-                      (isFreeShipping ? 0 : 100) +
-                      serviceFee
-                    ).toLocaleString()}
-                  </span>
+                {/* Trust badges */}
+                <div className="flex items-center justify-center gap-5 pt-1">
+                  {[
+                    { icon: ShieldCheck, label: "Secure" },
+                    { icon: Truck, label: "Fast Delivery" },
+                  ].map(({ icon: Icon, label }) => (
+                    <div key={label} className="flex items-center gap-1.5">
+                      <Icon className="w-3.5 h-3.5 text-[#1a1a2e]/25" />
+                      <span className="text-[10px] font-bold tracking-wide text-[#1a1a2e]/30 uppercase">
+                        {label}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }
