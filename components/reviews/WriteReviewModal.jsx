@@ -96,63 +96,91 @@ export default function WriteReviewModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold">
-            {editingReview ? "Edit Review" : "Write a Review"}
-          </h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-[#1a1a2e]/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      <div className="relative bg-white rounded-2xl shadow-2xl shadow-[#1a1a2e]/20 max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-[#E8E4DD]">
+        {/* Gold top accent */}
+        <div className="h-1 w-full bg-gradient-to-r from-[#D4A853] via-[#c9973d] to-[#e8c87a]" />
+
+        {/* ── HEADER ──────────────────────────────────────────────── */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8E4DD]">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+            <h2 className="text-base font-black text-[#1a1a2e] tracking-tight">
+              {editingReview ? "Edit Review" : "Write a Review"}
+            </h2>
+          </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-[#1a1a2e]/25 hover:text-[#1a1a2e] hover:bg-[#F5F3EF] transition-all duration-200"
           >
-            <X className="w-6 h-6" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Product Info */}
-        <div className="p-6 border-b border-gray-200">
-          <p className="text-sm font-bold">{product.name}</p>
+        {/* ── PRODUCT CONTEXT ───────────────────────────────────────── */}
+        <div className="px-6 py-3.5 bg-[#FAF9F6] border-b border-[#E8E4DD]">
+          <p className="text-[10px] font-black tracking-[0.2em] uppercase text-[#1a1a2e]/30 mb-0.5">
+            Reviewing
+          </p>
+          <p className="text-xs font-bold text-[#1a1a2e]/70 line-clamp-1">
+            {product.name}
+          </p>
         </div>
 
-        {/* Form */}
+        {/* ── FORM ────────────────────────────────────────────────── */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Rating */}
+          {/* Rating stars */}
           <div>
-            <label className="block text-sm font-bold mb-2">
-              Overall Rating *
+            <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a1a2e]/40 mb-3">
+              Overall Rating <span className="text-[#D4A853]">*</span>
             </label>
             <div className="flex items-center gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHoveredRating(star)}
-                  onMouseLeave={() => setHoveredRating(0)}
-                  className="focus:outline-none"
-                >
-                  <Star
-                    className={`w-8 h-8 ${
-                      star <= (hoveredRating || rating)
-                        ? "fill-amazon-secondary text-amazon-secondary"
-                        : "text-gray-300"
-                    }`}
-                  />
-                </button>
-              ))}
-              <span className="ml-2 text-sm text-gray-600">
-                {rating > 0 ? `${rating} out of 5 stars` : "Select rating"}
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoveredRating(star)}
+                    onMouseLeave={() => setHoveredRating(0)}
+                    className="focus:outline-none transition-transform duration-100 hover:scale-110"
+                  >
+                    <Star
+                      className={`w-9 h-9 transition-colors duration-150 ${
+                        star <= (hoveredRating || rating)
+                          ? "fill-[#D4A853] text-[#D4A853]"
+                          : "fill-[#E8E4DD] text-[#E8E4DD]"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+              <span className="text-xs font-bold text-[#1a1a2e]/35 ml-1">
+                {rating > 0
+                  ? ["", "Poor", "Fair", "Good", "Very Good", "Excellent"][
+                      rating
+                    ]
+                  : "Select a rating"}
               </span>
             </div>
           </div>
 
-          {/* Title */}
+          {/* Review title */}
           <div>
-            <label className="block text-sm font-bold mb-2">
-              Review Title *
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-[10px] font-black tracking-[0.2em] uppercase text-[#1a1a2e]/40">
+                Review Title <span className="text-[#D4A853]">*</span>
+              </label>
+              <span className="text-[10px] text-[#1a1a2e]/25 font-medium">
+                {title.length}/100
+              </span>
+            </div>
             <input
               type="text"
               value={title}
@@ -160,53 +188,55 @@ export default function WriteReviewModal({
               placeholder="What's most important to know?"
               required
               maxLength={100}
-              className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
+              className="w-full px-4 py-3 bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all duration-200"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              {title.length}/100 characters
-            </p>
           </div>
 
-          {/* Comment */}
+          {/* Review body */}
           <div>
-            <label className="block text-sm font-bold mb-2">
-              Your Review *
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-[10px] font-black tracking-[0.2em] uppercase text-[#1a1a2e]/40">
+                Your Review <span className="text-[#D4A853]">*</span>
+              </label>
+              <span className="text-[10px] text-[#1a1a2e]/25 font-medium">
+                {comment.length}/1000
+              </span>
+            </div>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Share your experience with this product"
+              placeholder="Share your experience with this product…"
               required
-              rows={6}
+              rows={5}
               maxLength={1000}
-              className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
+              className="w-full px-4 py-3 bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all duration-200 resize-none"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              {comment.length}/1000 characters
-            </p>
           </div>
 
-          {/* Buttons */}
-          <div className="flex gap-4">
+          {/* Footer buttons */}
+          <div className="flex gap-3 pt-1">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-2 border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50"
+              className="flex-1 py-3 bg-white border border-[#E8E4DD] hover:border-[#1a1a2e]/20 text-xs font-bold text-[#1a1a2e]/50 hover:text-[#1a1a2e] rounded-xl transition-all duration-200"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || rating === 0}
-              className="flex-1 px-6 py-2 bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary rounded-md text-sm font-bold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 py-3 bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] text-xs font-black tracking-[0.2em] uppercase rounded-xl shadow-md shadow-[#1a1a2e]/10 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              {loading
-                ? editingReview
-                  ? "Updating..."
-                  : "Submitting..."
-                : editingReview
-                  ? "Update Review"
-                  : "Submit Review"}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  {editingReview ? "Updating..." : "Submitting..."}
+                </span>
+              ) : editingReview ? (
+                "Update Review"
+              ) : (
+                "Submit Review"
+              )}
             </button>
           </div>
         </form>

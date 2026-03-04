@@ -21,171 +21,196 @@ export default function EditOrderModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-[#1a1a2e]/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
-      <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
-        {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-xl font-bold">Edit Order Details</h2>
+      <div className="relative bg-white rounded-2xl shadow-2xl shadow-[#1a1a2e]/20 max-w-2xl w-full max-h-[90vh] overflow-hidden border border-[#E8E4DD]">
+        {/* Gold top accent */}
+        <div className="h-1 w-full bg-gradient-to-r from-[#D4A853] via-[#c9973d] to-[#e8c87a]" />
+
+        {/* ── HEADER ──────────────────────────────────────────────── */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8E4DD]">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-5 rounded-full bg-[#D4A853]" />
+            <h2 className="text-base font-black text-[#1a1a2e] tracking-tight">
+              Edit Order Details
+            </h2>
+          </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-[#1a1a2e]/25 hover:text-[#1a1a2e] hover:bg-[#F5F3EF] transition-all duration-200"
           >
-            <X className="w-6 h-6" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Tabs */}
-        <div className="flex border-b">
-          <button
-            onClick={() => setEditMode("products")}
-            className={`flex-1 py-3 text-sm font-medium ${
-              editMode === "products"
-                ? "border-b-2 border-amazon-orange text-amazon-orange"
-                : "text-gray-600"
-            }`}
-          >
-            Products & Quantity
-          </button>
-          <button
-            onClick={() => setEditMode("address")}
-            className={`flex-1 py-3 text-sm font-medium ${
-              editMode === "address"
-                ? "border-b-2 border-amazon-orange text-amazon-orange"
-                : "text-gray-600"
-            }`}
-          >
-            Delivery Address
-          </button>
+        {/* ── TABS ────────────────────────────────────────────────── */}
+        <div className="flex gap-1 p-3 bg-[#FAF9F6] border-b border-[#E8E4DD]">
+          {[
+            { value: "products", label: "Products & Quantity" },
+            { value: "address", label: "Delivery Address" },
+          ].map(({ value, label }) => (
+            <button
+              key={value}
+              onClick={() => setEditMode(value)}
+              className={`flex-1 py-2.5 text-xs font-black tracking-wide rounded-xl transition-all duration-200 ${
+                editMode === value
+                  ? "bg-white text-[#1a1a2e] shadow-sm border border-[#E8E4DD]"
+                  : "text-[#1a1a2e]/35 hover:text-[#1a1a2e]/60"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
-        {/* Content */}
-        <div className="p-4 overflow-y-auto max-h-[60vh]">
-          {editMode === "products" ? (
-            <div className="space-y-4">
+        {/* ── CONTENT ─────────────────────────────────────────────── */}
+        <div className="p-6 overflow-y-auto max-h-[55vh]">
+          {/* Products tab */}
+          {editMode === "products" && (
+            <div className="space-y-3">
               {cart.map((item) => (
-                <div key={item.id} className="flex gap-4 p-3 border rounded">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={80}
-                    height={80}
-                    className="object-cover"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-medium text-sm">{item.name}</h3>
-                    <p className="text-amazon-orange font-bold text-sm">
+                <div
+                  key={item.id}
+                  className="flex gap-4 p-4 bg-[#FAF9F6] border border-[#E8E4DD] rounded-2xl hover:border-[#D4A853]/30 transition-colors duration-200"
+                >
+                  <div className="w-16 h-16 rounded-xl bg-white border border-[#E8E4DD] overflow-hidden shrink-0 flex items-center justify-center">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-contain p-1"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xs font-bold text-[#1a1a2e] line-clamp-2 leading-snug mb-1">
+                      {item.name}
+                    </h3>
+                    <p className="text-xs font-black text-[#1a1a2e] mb-3">
                       ৳{item.price.toLocaleString()}
                     </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <label className="text-xs">Quantity:</label>
-                      <select
-                        value={item.quantity}
-                        onChange={(e) =>
-                          onUpdateQuantity(item.id, Number(e.target.value))
-                        }
-                        className="border border-gray-300 rounded px-2 py-1 text-sm"
-                      >
-                        {[...Array(10)].map((_, i) => (
-                          <option key={i + 1} value={i + 1}>
-                            {i + 1}
-                          </option>
-                        ))}
-                      </select>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-bold text-[#1a1a2e]/35 uppercase tracking-wide">
+                        Qty
+                      </span>
+                      <div className="flex items-center gap-2 bg-white border border-[#E8E4DD] rounded-xl px-3 py-1.5">
+                        <button
+                          onClick={() =>
+                            onUpdateQuantity(item.id, item.quantity - 1)
+                          }
+                          disabled={item.quantity <= 1}
+                          className="w-4 h-4 flex items-center justify-center text-[#1a1a2e]/40 hover:text-[#1a1a2e] disabled:opacity-20 font-black text-sm"
+                        >
+                          −
+                        </button>
+                        <span className="text-xs font-black text-[#1a1a2e] w-4 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            onUpdateQuantity(item.id, item.quantity + 1)
+                          }
+                          className="w-4 h-4 flex items-center justify-center text-[#1a1a2e]/40 hover:text-[#1a1a2e] font-black text-sm"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
+          )}
+
+          {/* Address tab */}
+          {editMode === "address" && (
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={address.name || ""}
-                  onChange={(e) =>
-                    setAddress({ ...address, name: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">Address</label>
-                <input
-                  type="text"
-                  value={address.address || ""}
-                  onChange={(e) =>
-                    setAddress({ ...address, address: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-bold mb-1">City</label>
-                  <input
-                    type="text"
-                    value={address.city || ""}
-                    onChange={(e) =>
-                      setAddress({ ...address, city: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Postal Code
+              {[
+                {
+                  label: "Full Name",
+                  key: "name",
+                  type: "text",
+                  placeholder: "John Doe",
+                },
+                {
+                  label: "Street Address",
+                  key: "address",
+                  type: "text",
+                  placeholder: "123 Main St",
+                },
+                {
+                  label: "Phone",
+                  key: "phone",
+                  type: "tel",
+                  placeholder: "+880 1712 345678",
+                },
+                {
+                  label: "Email",
+                  key: "email",
+                  type: "email",
+                  placeholder: "you@example.com",
+                },
+              ].map(({ label, key, type, placeholder }) => (
+                <div key={key}>
+                  <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                    {label}
                   </label>
                   <input
-                    type="text"
-                    value={address.postalCode || ""}
+                    type={type}
+                    value={address[key] || ""}
                     onChange={(e) =>
-                      setAddress({ ...address, postalCode: e.target.value })
+                      setAddress({ ...address, [key]: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded"
+                    placeholder={placeholder}
+                    className="w-full px-4 py-3 bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all duration-200"
                   />
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">Phone</label>
-                <input
-                  type="tel"
-                  value={address.phone || ""}
-                  onChange={(e) =>
-                    setAddress({ ...address, phone: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">Email</label>
-                <input
-                  type="email"
-                  value={address.email || ""}
-                  onChange={(e) =>
-                    setAddress({ ...address, email: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                />
+              ))}
+
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "City", key: "city", placeholder: "Dhaka" },
+                  {
+                    label: "Postal Code",
+                    key: "postalCode",
+                    placeholder: "1212",
+                  },
+                ].map(({ label, key, placeholder }) => (
+                  <div key={key}>
+                    <label className="block text-xs font-bold text-[#1a1a2e]/60 mb-1.5 tracking-wide">
+                      {label}
+                    </label>
+                    <input
+                      type="text"
+                      value={address[key] || ""}
+                      onChange={(e) =>
+                        setAddress({ ...address, [key]: e.target.value })
+                      }
+                      placeholder={placeholder}
+                      className="w-full px-4 py-3 bg-[#FAF9F6] border border-[#E8E4DD] rounded-xl text-sm text-[#1a1a2e] placeholder:text-[#1a1a2e]/25 outline-none focus:border-[#D4A853] focus:ring-2 focus:ring-[#D4A853]/10 transition-all duration-200"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           )}
         </div>
 
-        {/* Footer */}
-        <div className="flex gap-2 p-4 border-t">
+        {/* ── FOOTER ──────────────────────────────────────────────── */}
+        <div className="flex gap-3 px-6 py-4 border-t border-[#E8E4DD] bg-[#FAF9F6]">
           <button
             onClick={onClose}
-            className="flex-1 py-2 border border-gray-300 rounded hover:bg-gray-50"
+            className="flex-1 py-3 bg-white border border-[#E8E4DD] hover:border-[#1a1a2e]/20 text-xs font-bold text-[#1a1a2e]/50 hover:text-[#1a1a2e] rounded-xl transition-all duration-200"
           >
             Cancel
           </button>
           <button
             onClick={editMode === "address" ? handleSaveAddress : onClose}
-            className="flex-1 py-2 bg-amazon-yellow hover:bg-amazon-yellow_hover rounded font-bold"
+            className="flex-1 py-3 bg-[#1a1a2e] hover:bg-[#D4A853] text-white hover:text-[#1a1a2e] text-xs font-black tracking-[0.2em] uppercase rounded-xl shadow-md shadow-[#1a1a2e]/10 transition-all duration-300"
           >
             Save Changes
           </button>
