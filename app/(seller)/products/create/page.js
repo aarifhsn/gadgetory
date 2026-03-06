@@ -104,220 +104,321 @@ export default function ProductsCreatePage() {
   };
 
   return (
-    <main className="max-w-[1000px] mx-auto w-full p-6">
-      <div className="mb-8 flex justify-between items-end">
+    <main className="max-w-[1000px] mx-auto w-full px-4 md:px-8 py-10">
+      {/* ── PAGE HEADER ───────────────────────────────────────────── */}
+      <div className="flex items-end justify-between mb-10">
         <div>
-          <h1 className="text-3xl font-normal">Add a Product</h1>
-          <p className="text-sm text-gray-600">
-            Create a new listing for your gadget product.
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-1 h-7 rounded-full bg-[#2D7D6F]" />
+            <h1 className="text-2xl font-black text-[#1a2e28] tracking-tight">
+              Add a Product
+            </h1>
+          </div>
+          <p className="text-sm text-[#1a2e28]/40 pl-4">
+            Create a new listing for your gadget store.
           </p>
         </div>
         <Link
           href="/products/manage-list"
-          className="text-amazon-blue hover:underline text-sm flex items-center gap-1"
+          className="flex items-center gap-1.5 text-xs font-bold text-[#1a2e28]/40 hover:text-[#2D7D6F] transition-colors duration-150"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back to Manage List
         </Link>
       </div>
 
+      {/* ── ERROR ALERT ───────────────────────────────────────────── */}
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-red-800 text-sm">{error}</p>
+        <div className="mb-6 px-4 py-3.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl flex items-center gap-3 text-sm font-medium">
+          <div className="w-5 h-5 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+            <svg
+              className="w-3 h-3 text-rose-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={3}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+          {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Step 1: Product Identity */}
-        <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-          <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-            <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-              Step 1: Product Identity
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* ── STEP 1: PRODUCT IDENTITY ──────────────────────────────── */}
+        <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+          <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+            <div className="w-6 h-6 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[10px] font-black text-white">
+              1
+            </div>
+            <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+              Product Identity
             </h2>
           </div>
           <div className="p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-bold mb-1">
-                  Product Name <span className="text-red-500">*</span>
+                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                  Product Name <span className="text-[#2D7D6F]">*</span>
                 </label>
                 <input
                   type="text"
                   name="name"
                   required
                   placeholder="e.g., Apple MacBook Pro M2 - 16GB RAM"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
+                  className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200"
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold mb-1">
-                  Category <span className="text-red-500">*</span>
+                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                  Category <span className="text-[#2D7D6F]">*</span>
                 </label>
-                <select
-                  name="category"
-                  required
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue "
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((cat) => (
-                    <option key={cat.value} value={cat.value}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    name="category"
+                    required
+                    className="appearance-none w-full px-4 py-3 pr-9 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200 cursor-pointer"
+                  >
+                    <option value="">Select a category</option>
+                    {categories.map((cat) => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    className="w-3 h-3 text-[#1a2e28]/30 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Brand <span className="text-red-500">*</span>
-                </label>
-                <select
-                  name="brand"
-                  required
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                >
-                  <option value="Apple">Apple</option>
-                  <option value="Samsung">Samsung</option>
-                  <option value="Dell">Dell</option>
-                  <option value="HP">HP</option>
-                  <option value="Lenovo">Lenovo</option>
-                  <option value="Sony">Sony</option>
-                  <option value="Razer">Razer</option>
-                  <option value="Logitech">Logitech</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Condition <span className="text-red-500">*</span>
-                </label>
-                <select
-                  name="condition"
-                  required
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                >
-                  <option value="new">New</option>
-                  <option value="renewed">Renewed</option>
-                </select>
-              </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  label: "Brand",
+                  name: "brand",
+                  options: [
+                    "Apple",
+                    "Samsung",
+                    "Dell",
+                    "HP",
+                    "Lenovo",
+                    "Sony",
+                    "Razer",
+                    "Logitech",
+                    "Other",
+                  ],
+                },
+                {
+                  label: "Condition",
+                  name: "condition",
+                  options: ["new", "renewed"],
+                },
+              ].map(({ label, name, options }) => (
+                <div key={name}>
+                  <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                    {label} <span className="text-[#2D7D6F]">*</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      name={name}
+                      required
+                      className="appearance-none w-full px-4 py-3 pr-9 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200 cursor-pointer capitalize"
+                    >
+                      {options.map((o) => (
+                        <option key={o} value={o} className="capitalize">
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                    <svg
+                      className="w-3 h-3 text-[#1a2e28]/30 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              ))}
             </div>
+
             <div>
-              <label className="block text-sm font-bold mb-1">
-                Description <span className="text-red-500">*</span>
+              <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                Description <span className="text-[#2D7D6F]">*</span>
               </label>
               <textarea
                 name="description"
                 required
-                rows="4"
-                placeholder="Describe your product features, specifications, and benefits..."
-                className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-              ></textarea>
+                rows={4}
+                placeholder="Describe your product features, specifications, and benefits…"
+                className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200 resize-none"
+              />
             </div>
           </div>
         </div>
 
-        {/* Step 2: Pricing & Inventory */}
-        <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-          <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-            <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-              Step 2: Pricing & Inventory
+        {/* ── STEP 2: PRICING & INVENTORY ───────────────────────────── */}
+        <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+          <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+            <div className="w-6 h-6 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[10px] font-black text-white">
+              2
+            </div>
+            <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+              Pricing & Inventory
             </h2>
           </div>
           <div className="p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Price (৳) <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="price"
-                  required
-                  min="0"
-                  step="0.01"
-                  placeholder="0.00"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Stock Quantity <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="stockQuantity"
-                  required
-                  min="0"
-                  placeholder="0"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  SKU (Optional)
-                </label>
-                <input
-                  type="text"
-                  name="sku"
-                  placeholder="e.g., MBP-M2-16-1TB"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                />
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  label: "Price (৳)",
+                  name: "price",
+                  type: "number",
+                  placeholder: "0.00",
+                  min: "0",
+                  step: "0.01",
+                  required: true,
+                },
+                {
+                  label: "Stock Quantity",
+                  name: "stockQuantity",
+                  type: "number",
+                  placeholder: "0",
+                  min: "0",
+                  required: true,
+                },
+                {
+                  label: "SKU (Optional)",
+                  name: "sku",
+                  type: "text",
+                  placeholder: "e.g., MBP-M2-16-1TB",
+                },
+              ].map(
+                ({ label, name, type, placeholder, min, step, required }) => (
+                  <div key={name}>
+                    <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                      {label}
+                      {required && (
+                        <span className="text-[#2D7D6F] ml-1">*</span>
+                      )}
+                    </label>
+                    <input
+                      type={type}
+                      name={name}
+                      required={required}
+                      min={min}
+                      step={step}
+                      placeholder={placeholder}
+                      className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200"
+                    />
+                  </div>
+                ),
+              )}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Availability <span className="text-red-500">*</span>
-                </label>
-                <select
-                  name="availability"
-                  required
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                >
-                  <option value="In Stock">In Stock</option>
-                  <option value="Pre-Order">Pre-Order</option>
-                  <option value="Out of Stock">Out of Stock</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Warranty Period
-                </label>
-                <select
-                  name="warrantyPeriod"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                >
-                  <option value="No Warranty">No Warranty</option>
-                  <option value="6 Months">6 Months</option>
-                  <option value="1 Year">1 Year</option>
-                  <option value="2 Years">2 Years</option>
-                  <option value="3 Years">3 Years</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Step 3: Product Images */}
-        <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-          <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-            <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-              Step 3: Product Images
-            </h2>
-          </div>
-          <div className="p-6 space-y-4">
-            <div>
-              <label className="block text-sm font-bold mb-1">
-                Main Product Image <span className="text-red-500">*</span>
-              </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-md p-8 text-center hover:border-amazon-blue transition-colors">
-                {mainImagePreview ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  label: "Availability",
+                  name: "availability",
+                  options: ["In Stock", "Pre-Order", "Out of Stock"],
+                  required: true,
+                },
+                {
+                  label: "Warranty Period",
+                  name: "warrantyPeriod",
+                  options: [
+                    "No Warranty",
+                    "6 Months",
+                    "1 Year",
+                    "2 Years",
+                    "3 Years",
+                  ],
+                },
+              ].map(({ label, name, options, required }) => (
+                <div key={name}>
+                  <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                    {label}
+                    {required && <span className="text-[#2D7D6F] ml-1">*</span>}
+                  </label>
                   <div className="relative">
+                    <select
+                      name={name}
+                      required={required}
+                      className="appearance-none w-full px-4 py-3 pr-9 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200 cursor-pointer"
+                    >
+                      {options.map((o) => (
+                        <option key={o} value={o}>
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                    <svg
+                      className="w-3 h-3 text-[#1a2e28]/30 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── STEP 3: PRODUCT IMAGES ────────────────────────────────── */}
+        <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+          <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+            <div className="w-6 h-6 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[10px] font-black text-white">
+              3
+            </div>
+            <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+              Product Images
+            </h2>
+          </div>
+          <div className="p-6 space-y-5">
+            {/* Main image */}
+            <div>
+              <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-2">
+                Main Image <span className="text-[#2D7D6F]">*</span>
+              </label>
+              <div className="border-2 border-dashed border-[#d0dbd9] hover:border-[#2D7D6F]/50 rounded-2xl p-8 text-center transition-colors duration-200 bg-[#F0F4F3]">
+                {mainImagePreview ? (
+                  <div>
                     <img
                       src={mainImagePreview}
                       alt="Preview"
-                      className="max-h-64 mx-auto object-contain"
+                      className="max-h-56 mx-auto object-contain rounded-xl mb-3"
                     />
                     <button
                       type="button"
@@ -325,21 +426,34 @@ export default function ProductsCreatePage() {
                         setMainImagePreview(null);
                         setMainImageFile(null);
                       }}
-                      className="mt-2 text-sm text-red-600 hover:underline"
+                      className="text-xs font-bold text-rose-500 hover:underline"
                     >
                       Remove Image
                     </button>
                   </div>
                 ) : (
-                  <label className="cursor-pointer">
-                    <i
-                      data-lucide="upload"
-                      className="w-12 h-12 mx-auto text-gray-400 mb-2"
-                    ></i>
-                    <p className="text-sm text-gray-600 mb-1">
+                  <label className="cursor-pointer block">
+                    <div className="w-12 h-12 rounded-2xl bg-[#2D7D6F]/10 flex items-center justify-center mx-auto mb-3">
+                      <svg
+                        className="w-6 h-6 text-[#2D7D6F]"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-sm font-bold text-[#1a2e28]/50 mb-1">
                       Click to upload or drag and drop
                     </p>
-                    <p className="text-xs text-gray-500">PNG, JPG up to 5MB</p>
+                    <p className="text-xs text-[#1a2e28]/30">
+                      PNG, JPG up to 5MB
+                    </p>
                     <input
                       type="file"
                       accept="image/*"
@@ -351,38 +465,38 @@ export default function ProductsCreatePage() {
                 )}
               </div>
             </div>
+
+            {/* Additional images */}
             <div>
-              <label className="block text-sm font-bold mb-1">
-                Additional Images (Optional)
+              <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-2">
+                Additional Images{" "}
+                <span className="text-[#1a2e28]/25 normal-case tracking-normal font-medium text-[11px]">
+                  — up to 4
+                </span>
               </label>
-              <p className="text-xs text-gray-500 mb-2">
-                Note: Additional image upload will be available after
-                implementing image storage
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {additionalImagesPreviews.map((preview, index) => (
                   <div
                     key={index}
-                    className="relative border-2 border-gray-300 rounded-md aspect-square"
+                    className="relative aspect-square rounded-xl overflow-hidden border border-[#d0dbd9] bg-[#F0F4F3]"
                   >
                     <img
                       src={preview}
                       alt={`Additional ${index + 1}`}
-                      className="w-full h-full object-cover rounded-md"
+                      className="w-full h-full object-contain p-2"
                     />
                     <button
                       type="button"
                       onClick={() => removeAdditionalImage(index)}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                      className="absolute top-2 right-2 w-6 h-6 bg-rose-500 hover:bg-rose-600 text-white rounded-full flex items-center justify-center shadow transition-colors"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 ))}
-
                 {additionalImagesPreviews.length < 4 && (
-                  <label className="border-2 border-dashed border-gray-300 rounded-md p-4 text-center hover:border-amazon-blue transition-colors cursor-pointer aspect-square flex items-center justify-center">
-                    <Plus className="w-8 h-8 text-gray-400" />
+                  <label className="border-2 border-dashed border-[#d0dbd9] hover:border-[#2D7D6F]/50 rounded-xl aspect-square flex items-center justify-center cursor-pointer transition-colors duration-200 bg-[#F0F4F3]">
+                    <Plus className="w-7 h-7 text-[#1a2e28]/20" />
                     <input
                       type="file"
                       accept="image/*"
@@ -397,89 +511,91 @@ export default function ProductsCreatePage() {
           </div>
         </div>
 
-        {/* Step 4: Specifications */}
-        <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-          <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-            <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-              Step 4: Technical Specifications (Optional)
+        {/* ── STEP 4: SPECIFICATIONS ────────────────────────────────── */}
+        <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+          <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+            <div className="w-6 h-6 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[10px] font-black text-white">
+              4
+            </div>
+            <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+              Technical Specifications
+              <span className="ml-2 text-[#1a2e28]/25 normal-case tracking-normal font-medium text-[11px]">
+                Optional
+              </span>
             </h2>
           </div>
           <div className="p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Processor/Chipset
-                </label>
-                <input
-                  type="text"
-                  name="processor"
-                  placeholder="e.g., Apple M2 Max"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  RAM/Memory
-                </label>
-                <input
-                  type="text"
-                  name="ram"
-                  placeholder="e.g., 32GB"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold mb-1">Storage</label>
-                <input
-                  type="text"
-                  name="storage"
-                  placeholder="e.g., 1TB SSD"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">
-                  Display Size
-                </label>
-                <input
-                  type="text"
-                  name="displaySize"
-                  placeholder="e.g., 16 inch"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                />
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  label: "Processor / Chipset",
+                  name: "processor",
+                  placeholder: "e.g., Apple M2 Max",
+                },
+                {
+                  label: "RAM / Memory",
+                  name: "ram",
+                  placeholder: "e.g., 32GB",
+                },
+                {
+                  label: "Storage",
+                  name: "storage",
+                  placeholder: "e.g., 1TB SSD",
+                },
+                {
+                  label: "Display Size",
+                  name: "displaySize",
+                  placeholder: "e.g., 16 inch",
+                },
+              ].map(({ label, name, placeholder }) => (
+                <div key={name}>
+                  <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                    {label}
+                  </label>
+                  <input
+                    type="text"
+                    name={name}
+                    placeholder={placeholder}
+                    className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200"
+                  />
+                </div>
+              ))}
             </div>
             <div>
-              <label className="block text-sm font-bold mb-1">
+              <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
                 Other Specifications
               </label>
               <textarea
                 name="otherSpecs"
-                rows="3"
-                placeholder="Add any other technical details (Battery life, Connectivity, Ports, etc.)"
-                className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-              ></textarea>
+                rows={3}
+                placeholder="Battery life, connectivity, ports, etc."
+                className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200 resize-none"
+              />
             </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-end pt-4">
+        {/* ── ACTION BUTTONS ────────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-end pt-2">
           <Link
             href="/products/manage-list"
-            className="px-6 py-2 border border-gray-400 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors text-center"
+            className="px-6 py-3 bg-white border border-[#E8E4DD] hover:border-[#1a2e28]/20 text-xs font-bold text-[#1a2e28]/50 hover:text-[#1a2e28] rounded-xl transition-all duration-200 text-center"
           >
             Cancel
           </Link>
-
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2 bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary rounded-md text-sm font-bold shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-8 py-3 bg-[#2D7D6F] hover:bg-[#1a2e28] text-white text-xs font-black tracking-[0.2em] uppercase rounded-xl shadow-md shadow-[#2D7D6F]/20 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {loading ? "Publishing..." : "Publish Product"}
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                Publishing...
+              </span>
+            ) : (
+              "Publish Product"
+            )}
           </button>
         </div>
       </form>

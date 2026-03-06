@@ -105,7 +105,7 @@ export async function createProduct(formData) {
       success: true,
       data: {
         id: newProduct._id.toString(),
-        slug: newProduct.slug, // ✅ Return slug as well
+        slug: newProduct.slug,
         name: newProduct.name,
         message: "Product created successfully!",
       },

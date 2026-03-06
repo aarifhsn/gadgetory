@@ -1,3 +1,4 @@
+import Product from "@/models/Product";
 import { NextResponse } from "next/server";
 
 import { auth } from "@/auth";
@@ -30,6 +31,16 @@ export async function POST(request) {
         { error: "Order cannot be cancelled" },
         { status: 400 },
       );
+    }
+
+    // Restore stock
+    for (const item of order.items) {
+      await Product.findByIdAndUpdate(item.productId, {
+        $inc: {
+          stockQuantity: item.quantity,
+          unitsSold: -item.quantity,
+        },
+      });
     }
 
     // 3️⃣ Update only if allowed

@@ -194,128 +194,153 @@ export default function ShopProfileClient({ user }) {
   }
 
   return (
-    <main className="max-w-[1200px] mx-auto w-full p-6">
-      .{/* Success Message */}
+    <main className="max-w-[1200px] mx-auto w-full px-4 md:px-8 py-10">
+      {/* ── SUCCESS / ERROR ALERTS ──────────────────────────────── */}
       {success && (
-        <div className="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded flex items-center gap-2">
-          <CheckCircle className="w-5 h-5" />
-          <span>Profile updated successfully!</span>
+        <div className="mb-6 px-4 py-3.5 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-center gap-3 text-sm font-medium">
+          <CheckCircle className="w-4 h-4 shrink-0" />
+          Profile updated successfully!
         </div>
       )}
-      {/* Error Message */}
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded">
+        <div className="mb-6 px-4 py-3.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl flex items-center gap-3 text-sm font-medium">
+          <div className="w-5 h-5 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+            <svg
+              className="w-3 h-3 text-rose-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={3}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
           {error}
         </div>
       )}
-      <div className="mb-8 flex justify-between items-end">
+
+      {/* ── PAGE HEADER ───────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-normal">Shop Profile</h1>
-          <p className="text-sm text-gray-600">
-            Manage your shop information and appearance on gadgetory
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-1 h-7 rounded-full bg-[#2D7D6F]" />
+            <h1 className="text-2xl font-black text-[#1a2e28] tracking-tight">
+              Shop Profile
+            </h1>
+          </div>
+          <p className="text-sm text-[#1a2e28]/35 pl-4">
+            Manage your shop information and appearance on gadgetory.
           </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            id="viewModeBtn"
-            className={`px-4 py-2 transition-colors ${viewMode ? "bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary text-gray-900 rounded-md text-sm font-medium shadow-sm" : "bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300"}`}
-            onClick={() => setViewMode(true)}
-          >
-            <Eye className="    w-4 h-4 inline mr-1" />
-            View Mode
-          </button>
-          <button
-            id="editModeBtn"
-            className={`px-4 py-2 transition-colors ${!viewMode ? "bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary text-gray-900 rounded-md text-sm font-medium shadow-sm" : "bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300"}`}
-            onClick={() => setViewMode(false)}
-          >
-            <Pencil className="w-4 h-4 inline mr-1" />
-            Edit Mode
-          </button>
+
+        {/* View / Edit toggle */}
+        <div className="flex gap-1 p-1 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl self-start sm:self-auto">
+          {[
+            {
+              label: "View",
+              icon: Eye,
+              active: viewMode,
+              onClick: () => setViewMode(true),
+            },
+            {
+              label: "Edit",
+              icon: Pencil,
+              active: !viewMode,
+              onClick: () => setViewMode(false),
+            },
+          ].map(({ label, icon: Icon, active, onClick }) => (
+            <button
+              key={label}
+              onClick={onClick}
+              className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-black tracking-wide rounded-lg transition-all duration-200 ${
+                active
+                  ? "bg-white text-[#1a2e28] shadow-sm border border-[#d0dbd9]"
+                  : "text-[#1a2e28]/35 hover:text-[#1a2e28]/60"
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              {label} Mode
+            </button>
+          ))}
         </div>
       </div>
-      {/* View Mode */}
+
+      {/* ════════════════════════════════════════════════════════════
+        VIEW MODE
+    ════════════════════════════════════════════════════════════ */}
       {viewMode && (
-        <div id="viewMode" className="space-y-6">
+        <div className="space-y-5">
           {/* Shop Preview Card */}
-          <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-            <div className="bg-gray-50 px-6 py-3 border-b border-gray-300 flex justify-between items-center">
-              <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                Shop Preview
-              </h2>
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-5 rounded-full bg-[#2D7D6F]" />
+                <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+                  Shop Preview
+                </h2>
+              </div>
               {user?.shopProfile?.verified && (
-                <span className="flex items-center bg-green-50 px-2 py-1 rounded border border-green-200">
-                  <CheckCircle className="w-3 h-3 text-green-600 mr-1" />
-                  <span className="text-[10px] font-bold text-green-700 uppercase">
+                <span className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
+                  <CheckCircle className="w-3 h-3 text-emerald-600" />
+                  <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">
                     Verified
                   </span>
                 </span>
               )}
             </div>
-            <div className="p-6">
-              {/* Shop Card Preview */}
-              <div className="max-w-sm mx-auto bg-white border border-gray-200 rounded-sm overflow-hidden shadow-md">
-                <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100">
+            <div className="p-6 flex justify-center">
+              <div className="w-full max-w-sm bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-md">
+                {/* Banner */}
+                <div className="h-44 overflow-hidden bg-[#F0F4F3] relative">
                   <Image
-                    id="previewBanner"
                     src={formData.banner || "/placeholder.png"}
-                    className="w-full h-full object-cover"
                     alt="Shop Banner"
-                    width={600}
-                    height={192}
+                    fill
+                    className="object-cover"
                     priority
                   />
                 </div>
-
-                <div className="p-4">
-                  <h3
-                    id="previewName"
-                    className="font-bold text-lg text-amazon-blue mb-1"
-                  >
+                <div className="p-5">
+                  <h3 className="font-black text-lg text-[#1a2e28] tracking-tight mb-0.5">
                     {user?.shopName}
                   </h3>
-                  <p
-                    id="previewLocation"
-                    className="text-sm text-gray-500 mb-3"
-                  >
+                  <p className="text-xs text-[#1a2e28]/40 mb-3">
                     {user?.shopProfile?.address}
                   </p>
 
-                  <div className="flex items-center gap-1 mb-3">
-                    <div className="flex text-amazon-secondary">
-                      {Array.from({ length: 5 }).map((_, index) => (
+                  {/* Stars */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
                         <Star
-                          key={index}
-                          className={`w-4 h-4 ${
-                            index < Math.floor(user?.shopRating || 0)
-                              ? "fill-current"
-                              : index < (user?.shopRating || 0)
-                                ? "fill-current opacity-50"
-                                : "opacity-30"
-                          }`}
+                          key={i}
+                          className={`w-3.5 h-3.5 ${i < Math.floor(user?.shopRating || 0) ? "fill-[#D4A853] text-[#D4A853]" : "fill-[#E8E4DD] text-[#E8E4DD]"}`}
                         />
                       ))}
                     </div>
-                    <span className="text-xs text-amazon-blue">
+                    <span className="text-[11px] text-[#1a2e28]/35 font-medium">
                       {user?.shopRating > 0
-                        ? `${user.shopRating} (${user.totalReviews} ${user.totalReviews === 1 ? "review" : "reviews"})`
+                        ? `${user.shopRating} · ${user.totalReviews} ${user.totalReviews === 1 ? "review" : "reviews"}`
                         : "No reviews yet"}
                     </span>
                   </div>
 
-                  <p
-                    id="previewDescription"
-                    className="text-sm text-gray-700 mb-4"
-                  >
+                  <p className="text-xs text-[#1a2e28]/55 leading-relaxed mb-4">
                     {user?.shopProfile?.description || "No description yet"}
                   </p>
 
-                  <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <div className="text-xs">
-                      <span className="text-gray-500">Specializes in:</span>
-                      <span id="previewSpecialization" className="font-bold">
+                  <div className="pt-3 border-t border-[#F5F3EF] flex items-center justify-between">
+                    <div>
+                      <p className="text-[9px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/25 mb-0.5">
+                        Specializes in
+                      </p>
+                      <p className="text-xs font-bold text-[#2D7D6F]">
                         {user?.shopProfile?.specialization || "General"}
-                      </span>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -323,17 +348,18 @@ export default function ShopProfileClient({ user }) {
             </div>
           </div>
 
-          {/* Shop Details */}
-          <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-            <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-              <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
+          {/* Shop Information */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+              <div className="w-1 h-5 rounded-full bg-[#2D7D6F]" />
+              <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
                 Shop Information
               </h2>
             </div>
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Shop Information */}
-              <div className="md:col-span-2 flex items-center gap-4 pb-4 border-b border-gray-200">
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-300">
+            <div className="p-6 space-y-6">
+              {/* Avatar + name */}
+              <div className="flex items-center gap-4 pb-5 border-b border-[#F5F3EF]">
+                <div className="w-20 h-20 rounded-2xl overflow-hidden border border-[#E8E4DD] bg-[#F0F4F3] shrink-0 flex items-center justify-center">
                   {user?.avatar ? (
                     <Image
                       src={user.avatar}
@@ -343,432 +369,452 @@ export default function ShopProfileClient({ user }) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                      <User className="w-8 h-8 text-gray-400" />
-                    </div>
+                    <User className="w-8 h-8 text-[#1a2e28]/15" />
                   )}
                 </div>
                 <div>
-                  <h3 className="font-bold text-xl">{user?.shopName}</h3>
-                  <p className="text-sm text-gray-600">{user?.name}</p>
+                  <h3 className="text-lg font-black text-[#1a2e28] tracking-tight">
+                    {user?.shopName}
+                  </h3>
+                  <p className="text-sm text-[#1a2e28]/40">{user?.name}</p>
                 </div>
-              </div>
-            </div>
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Shop Name
-                </label>
-                <p className="font-medium">{user?.shopName}</p>
               </div>
 
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Owner Name
-                </label>
-                <p className="font-medium">{user?.name}</p>
-              </div>
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Email
-                </label>
-                <p className="font-medium">{user?.email}</p>
-              </div>
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Phone Number
-                </label>
-                <p className="font-medium">
-                  {user?.mobile?.countryCode} - {user?.mobile?.number}
-                </p>
-              </div>
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Location
-                </label>
-                <p className="font-medium">
-                  {user?.shopProfile?.city || "Not set"}
-                </p>
-              </div>
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Specialization
-                </label>
-                <p className="font-medium">
-                  {user?.shopProfile?.specialization || "Not set"}
-                </p>
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-xs text-gray-500 mb-1">
-                  Shop Description
-                </label>
-                <p className="font-medium">
-                  {user?.shopProfile?.description || "No description"}
-                </p>
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-xs text-gray-500 mb-1">
-                  Address
-                </label>
-                <p className="font-medium">
-                  {user?.shopProfile?.address || "Not set"}
-                </p>
-              </div>
-              {user?.shopProfile?.yearEstablished && (
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Year Established
-                  </label>
-                  <p className="font-medium">
-                    {user.shopProfile.yearEstablished}
+              {/* Info grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {[
+                  { label: "Shop Name", value: user?.shopName },
+                  { label: "Owner Name", value: user?.name },
+                  { label: "Email", value: user?.email },
+                  {
+                    label: "Phone",
+                    value: `${user?.mobile?.countryCode} ${user?.mobile?.number}`,
+                  },
+                  {
+                    label: "City",
+                    value: user?.shopProfile?.city || "Not set",
+                  },
+                  {
+                    label: "Specialization",
+                    value: user?.shopProfile?.specialization || "Not set",
+                  },
+                  ...(user?.shopProfile?.yearEstablished
+                    ? [
+                        {
+                          label: "Year Established",
+                          value: user.shopProfile.yearEstablished,
+                        },
+                      ]
+                    : []),
+                  ...(user?.shopProfile?.website
+                    ? [
+                        {
+                          label: "Website",
+                          value: user.shopProfile.website,
+                          href: user.shopProfile.website,
+                        },
+                      ]
+                    : []),
+                ].map(({ label, value, href }) => (
+                  <div
+                    key={label}
+                    className="flex items-start gap-3 p-4 bg-[#F0F4F3] rounded-xl"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[9px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/30 mb-1">
+                        {label}
+                      </p>
+                      {href ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          className="text-sm font-bold text-[#2D7D6F] hover:underline underline-offset-4 truncate block"
+                        >
+                          {value}
+                        </a>
+                      ) : (
+                        <p className="text-sm font-bold text-[#1a2e28] truncate">
+                          {value}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="md:col-span-2 p-4 bg-[#F0F4F3] rounded-xl">
+                  <p className="text-[9px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/30 mb-1">
+                    Shop Description
+                  </p>
+                  <p className="text-sm font-medium text-[#1a2e28]/70 leading-relaxed">
+                    {user?.shopProfile?.description || "No description"}
                   </p>
                 </div>
-              )}
-              {user?.shopProfile?.website && (
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Website
-                  </label>
-                  <a
-                    href={user.shopProfile.website}
-                    target="_blank"
-                    className="font-medium text-amazon-blue hover:underline"
-                  >
-                    {user.shopProfile.website}
-                  </a>
+
+                <div className="md:col-span-2 p-4 bg-[#F0F4F3] rounded-xl">
+                  <p className="text-[9px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/30 mb-1">
+                    Address
+                  </p>
+                  <p className="text-sm font-medium text-[#1a2e28]/70">
+                    {user?.shopProfile?.address || "Not set"}
+                  </p>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
       )}
-      {/* Edit Mode */}
+
+      {/* ════════════════════════════════════════════════════════════
+        EDIT MODE
+    ════════════════════════════════════════════════════════════ */}
       {!viewMode && (
-        <div>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
-            <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-                <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                  Basic Information
-                </h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* ── BASIC INFORMATION ─────────────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[9px] font-black text-white">
+                1
               </div>
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      Shop Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="shopName"
-                      value={formData.shopName}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      Owner Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                    />
-                  </div>
-                </div>
-
-                {/* Profile Picture */}
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Profile Picture
-                  </label>
-                  <div className="flex items-center gap-4">
-                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border-2 border-gray-300">
-                      {avatarPreview ? (
-                        <Image
-                          src={avatarPreview}
-                          alt="Avatar"
-                          width={96}
-                          height={96}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <User className="w-12 h-12 text-gray-400" />
-                      )}
-                    </div>
-                    <label className="cursor-pointer px-4 py-2 bg-white border border-gray-400 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
-                      <Upload className="w-4 h-4" />
-                      Change Photo
+              <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+                Basic Information
+              </h2>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  { label: "Shop Name", name: "shopName", required: true },
+                  { label: "Owner Name", name: "name", required: true },
+                  {
+                    label: "Email",
+                    name: "email",
+                    type: "email",
+                    required: true,
+                  },
+                  {
+                    label: "Phone Number",
+                    name: "mobileNumber",
+                    type: "tel",
+                    placeholder: "1712345678",
+                    required: true,
+                  },
+                ].map(
+                  ({ label, name, type = "text", placeholder, required }) => (
+                    <div key={name}>
+                      <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                        {label}
+                        {required && (
+                          <span className="text-[#2D7D6F] ml-1">*</span>
+                        )}
+                      </label>
                       <input
-                        type="file"
-                        accept="image/*"
-                        disabled={loading}
-                        onChange={handleAvatarUpload}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      name="mobileNumber"
-                      value={formData.mobileNumber}
-                      onChange={handleChange}
-                      placeholder="1712345678"
-                      required
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Shop Description
-                  </label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    rows="4"
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Location & Specialization */}
-            <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-                <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                  Location & Specialization
-                </h2>
-              </div>
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      City/Location *
-                    </label>
-                    <select
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                    >
-                      <option>Dhaka</option>
-                      <option>Chittagong</option>
-                      <option>Sylhet</option>
-                      <option>Rajshahi</option>
-                      <option>Khulna</option>
-                      <option>Barisal</option>
-                      <option>Rangpur</option>
-                      <option>Mymensingh</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      Specialization *
-                    </label>
-                    <select
-                      name="specialization"
-                      value={formData.specialization}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                    >
-                      <option>Laptops & PCs</option>
-                      <option>Smartphones</option>
-                      <option>Gaming Gear</option>
-                      <option>Audio & Headphones</option>
-                      <option>Cameras & Lenses</option>
-                      <option>Wearables</option>
-                      <option>Accessories</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Full Address
-                  </label>
-                  <textarea
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    rows="2"
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Shop Banner */}
-            <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-                <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                  Shop Banner Image
-                </h2>
-              </div>
-              <div className="p-6">
-                {user?.shopProfile?.banner && (
-                  <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">
-                      Current Banner
-                    </label>
-                    <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 rounded-md border border-gray-300">
-                      <Image
-                        src={
-                          formData.banner ||
-                          "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600"
-                        }
-                        className="w-full h-full object-cover"
-                        alt={user?.shopName + " Banner"}
-                        width={600}
-                        height={192}
-                        priority
+                        type={type}
+                        name={name}
+                        value={formData[name]}
+                        onChange={handleChange}
+                        required={required}
+                        placeholder={placeholder}
+                        className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200"
                       />
                     </div>
-                  </div>
+                  ),
                 )}
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Upload New Banner
-                  </label>
-                  <div
-                    onClick={() => fileInputRef.current.click()}
-                    className="border-2 border-dashed border-gray-300 rounded-md p-8 text-center hover:border-amazon-blue transition-colors cursor-pointer"
-                  >
-                    <Upload className="w-12 h-12 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600 mb-1">
-                      Click to upload or drag and drop
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG up to 5MB (Recommended: 1200 x 400 pixels)
-                    </p>
+              </div>
+
+              {/* Avatar */}
+              <div>
+                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-2">
+                  Profile Picture
+                </label>
+                <div className="flex items-center gap-5">
+                  <div className="w-20 h-20 rounded-2xl bg-[#F0F4F3] border border-[#d0dbd9] overflow-hidden flex items-center justify-center shrink-0">
+                    {avatarPreview ? (
+                      <Image
+                        src={avatarPreview}
+                        alt="Avatar"
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-8 h-8 text-[#1a2e28]/15" />
+                    )}
+                  </div>
+                  <label className="cursor-pointer flex items-center gap-2 px-4 py-2.5 bg-[#F0F4F3] border border-[#d0dbd9] hover:border-[#2D7D6F]/40 text-xs font-bold text-[#1a2e28]/60 hover:text-[#1a2e28] rounded-xl transition-all duration-200">
+                    <Upload className="w-3.5 h-3.5" />
+                    Change Photo
                     <input
                       type="file"
                       accept="image/*"
-                      ref={fileInputRef}
                       disabled={loading}
-                      onChange={handleBannerUpload}
+                      onChange={handleAvatarUpload}
                       className="hidden"
                     />
-                  </div>
+                  </label>
                 </div>
               </div>
-            </div>
 
-            {/* Additional Information */}
-            <div className="bg-white border border-gray-300 rounded shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-300">
-                <h2 className="font-bold text-gray-700 uppercase tracking-wider text-xs">
-                  Additional Information
-                </h2>
+              {/* Description */}
+              <div>
+                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                  Shop Description
+                </label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows={4}
+                  className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200 resize-none"
+                />
               </div>
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      Year Established
+            </div>
+          </div>
+
+          {/* ── LOCATION & SPECIALIZATION ─────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[9px] font-black text-white">
+                2
+              </div>
+              <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+                Location & Specialization
+              </h2>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  {
+                    label: "City",
+                    name: "city",
+                    options: [
+                      "Dhaka",
+                      "Chittagong",
+                      "Sylhet",
+                      "Rajshahi",
+                      "Khulna",
+                      "Barisal",
+                      "Rangpur",
+                      "Mymensingh",
+                    ],
+                    required: true,
+                  },
+                  {
+                    label: "Specialization",
+                    name: "specialization",
+                    options: [
+                      "Laptops & PCs",
+                      "Smartphones",
+                      "Gaming Gear",
+                      "Audio & Headphones",
+                      "Cameras & Lenses",
+                      "Wearables",
+                      "Accessories",
+                    ],
+                    required: true,
+                  },
+                ].map(({ label, name, options, required }) => (
+                  <div key={name}>
+                    <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                      {label}
+                      {required && (
+                        <span className="text-[#2D7D6F] ml-1">*</span>
+                      )}
+                    </label>
+                    <div className="relative">
+                      <select
+                        name={name}
+                        value={formData[name]}
+                        onChange={handleChange}
+                        required={required}
+                        className="appearance-none w-full px-4 py-3 pr-9 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all cursor-pointer"
+                      >
+                        {options.map((o) => (
+                          <option key={o} value={o}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                      <svg
+                        className="w-3 h-3 text-[#1a2e28]/30 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                  Full Address
+                </label>
+                <textarea
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  rows={2}
+                  className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200 resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ── SHOP BANNER ───────────────────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[9px] font-black text-white">
+                3
+              </div>
+              <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+                Shop Banner
+              </h2>
+            </div>
+            <div className="p-6 space-y-4">
+              {formData.banner && (
+                <div className="h-44 rounded-2xl overflow-hidden border border-[#d0dbd9] relative">
+                  <Image
+                    src={formData.banner}
+                    alt="Banner preview"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              )}
+              <div
+                onClick={() => fileInputRef.current.click()}
+                className="border-2 border-dashed border-[#d0dbd9] hover:border-[#2D7D6F]/50 rounded-2xl p-8 text-center bg-[#F0F4F3] cursor-pointer transition-colors duration-200"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-[#2D7D6F]/10 flex items-center justify-center mx-auto mb-3">
+                  <Upload className="w-6 h-6 text-[#2D7D6F]" />
+                </div>
+                <p className="text-sm font-bold text-[#1a2e28]/40 mb-1">
+                  {formData.banner
+                    ? "Click to replace banner"
+                    : "Click to upload banner"}
+                </p>
+                <p className="text-xs text-[#1a2e28]/25">
+                  PNG, JPG up to 5MB · Recommended: 1200 × 400px
+                </p>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  disabled={loading}
+                  onChange={handleBannerUpload}
+                  className="hidden"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ── ADDITIONAL INFORMATION ────────────────────────────── */}
+          <div className="bg-white border border-[#E8E4DD] rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-[#E8E4DD] flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full bg-[#2D7D6F] flex items-center justify-center text-[9px] font-black text-white">
+                4
+              </div>
+              <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#1a2e28]">
+                Additional Information
+                <span className="ml-2 normal-case tracking-normal font-medium text-[11px] text-[#1a2e28]/25">
+                  Optional
+                </span>
+              </h2>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  {
+                    label: "Year Established",
+                    name: "yearEstablished",
+                    type: "number",
+                    placeholder: "e.g., 2014",
+                  },
+                  {
+                    label: "Number of Employees",
+                    name: "numberOfEmployees",
+                    type: "number",
+                    placeholder: "e.g., 25",
+                  },
+                ].map(({ label, name, type, placeholder }) => (
+                  <div key={name}>
+                    <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                      {label}
                     </label>
                     <input
-                      type="number"
-                      name="yearEstablished"
-                      value={formData.yearEstablished}
+                      type={type}
+                      name={name}
+                      value={formData[name]}
                       onChange={handleChange}
-                      placeholder="e.g., 2014"
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
+                      placeholder={placeholder}
+                      className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-bold mb-1">
-                      Number of Employees
-                    </label>
-                    <input
-                      type="number"
-                      name="numberOfEmployees"
-                      value={formData.numberOfEmployees}
-                      onChange={handleChange}
-                      placeholder="e.g., 25"
-                      className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Official Brand Partnerships (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    name="brandPartnerships"
-                    value={formData.brandPartnerships}
-                    onChange={handleChange}
-                    placeholder="e.g., Apple, Dell, HP, Lenovo"
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Separate multiple brands with commas
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold mb-1">
-                    Website URL (Optional)
-                  </label>
-                  <input
-                    type="url"
-                    name="website"
-                    value={formData.website}
-                    onChange={handleChange}
-                    placeholder="https://www.yourshop.com"
-                    className="w-full px-3 py-2 border border-gray-400 rounded-md outline-none focus:ring-1 focus:ring-amazon-blue focus:border-amazon-blue"
-                  />
-                </div>
+                ))}
+              </div>
+              <div>
+                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                  Brand Partnerships
+                </label>
+                <input
+                  type="text"
+                  name="brandPartnerships"
+                  value={formData.brandPartnerships}
+                  onChange={handleChange}
+                  placeholder="e.g., Apple, Dell, HP, Lenovo"
+                  className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200"
+                />
+                <p className="text-[11px] text-[#1a2e28]/25 mt-1.5 font-medium">
+                  Separate multiple brands with commas
+                </p>
+              </div>
+              <div>
+                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-[#1a2e28]/40 mb-1.5">
+                  Website URL
+                </label>
+                <input
+                  type="url"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  placeholder="https://www.yourshop.com"
+                  className="w-full px-4 py-3 bg-[#F0F4F3] border border-[#d0dbd9] rounded-xl text-sm text-[#1a2e28] placeholder:text-[#1a2e28]/25 outline-none focus:border-[#2D7D6F] focus:ring-2 focus:ring-[#2D7D6F]/10 transition-all duration-200"
+                />
               </div>
             </div>
+          </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-end pt-4">
-              <button
-                type="button"
-                onClick={() => setViewMode(true)}
-                className="px-6 py-2 border border-gray-400 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-6 py-2 bg-amazon-yellow hover:bg-amazon-yellow_hover border border-amazon-secondary rounded-md text-sm font-bold shadow-sm transition-colors disabled:opacity-50"
-              >
-                {loading ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* ── ACTION BUTTONS ────────────────────────────────────── */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-end pt-2">
+            <button
+              type="button"
+              onClick={() => setViewMode(true)}
+              className="px-6 py-3 bg-white border border-[#d0dbd9] hover:border-[#1a2e28]/20 text-xs font-bold text-[#1a2e28]/50 hover:text-[#1a2e28] rounded-xl transition-all duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-8 py-3 bg-[#2D7D6F] hover:bg-[#1a2e28] text-white text-xs font-black tracking-[0.2em] uppercase rounded-xl shadow-md shadow-[#2D7D6F]/20 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  Saving...
+                </span>
+              ) : (
+                "Save Changes"
+              )}
+            </button>
+          </div>
+        </form>
       )}
     </main>
   );

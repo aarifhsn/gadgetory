@@ -70,6 +70,8 @@ export default function PaymentProcessPage() {
         paymentMethod, // from state
       };
 
+      setLoading(true);
+
       // Call API to create order and update unitsSold
       const response = await fetch("/api/orders/create", {
         method: "POST",
@@ -84,7 +86,6 @@ export default function PaymentProcessPage() {
         setLoading(false);
         return;
       }
-      setLoading(true);
 
       toast.success("Order placed successfully!");
 

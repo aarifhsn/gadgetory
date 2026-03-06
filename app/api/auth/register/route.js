@@ -6,8 +6,11 @@ export async function POST(request) {
   try {
     const { name, email, password, mobile, userType, shopName } =
       await request.json();
+
     // Validation
-    if (!name || !email || !password) {
+    const trimmedPassword = password?.trim();
+
+    if (!name || !email || !trimmedPassword) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },

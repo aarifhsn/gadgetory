@@ -15,31 +15,31 @@ export default async function HeroCategorySection({ categories }) {
     : heroCategories.slice(0, 3);
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {/* ── CATEGORY CARDS ────────────────────────────────────────── */}
       {displayCategories.map((category, idx) => (
         <Link
           key={category.slug}
           href={`/products?category=${category.slug}`}
-          className="group relative overflow-hidden bg-[#E8E4DD] aspect-[3/4] block rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-500"
+          className="group relative overflow-hidden bg-[#E8E4DD] aspect-[3/4] block rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-500"
         >
           {/* Background image — full bleed */}
           {category.type === "single" && category.images[0] && (
             <img
               src={category.images[0]}
               alt={category.name}
-              className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-out"
             />
           )}
 
           {category.type === "grid" && (
-            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5">
+            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-2">
               {category.images.slice(0, 4).map((img, i) => (
                 <img
                   key={i}
                   src={img}
                   alt={`${category.name} ${i + 1}`}
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                  className="w-full h-full object-cover transition-opacity duration-500"
                 />
               ))}
               {Array.from({
@@ -50,14 +50,8 @@ export default async function HeroCategorySection({ categories }) {
             </div>
           )}
 
-          {/* Light-mode gradient — warm ivory at bottom */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F6]/95 via-[#FAF9F6]/30 to-transparent" />
-
-          {/* Hover tint */}
-          <div className="absolute inset-0 bg-[#D4A853]/0 group-hover:bg-[#D4A853]/8 transition-colors duration-500 rounded-2xl" />
-
           {/* Content — pinned to bottom */}
-          <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div className="absolute bottom-0 left-0 right-0 p-5 bg-slate-50/80 backdrop-blur-sm rounded-b-2xl z-10">
             {/* Index number */}
             <span className="text-[10px] font-bold tracking-[0.3em] text-[#D4A853] uppercase block mb-1">
               0{idx + 1}

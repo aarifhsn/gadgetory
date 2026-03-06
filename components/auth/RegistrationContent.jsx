@@ -34,27 +34,6 @@ export default function RegistrationContent() {
             </h1>
           </div>
 
-          {/* Account type toggle */}
-          <div className="flex items-center gap-1 bg-[#F5F3EF] p-1 rounded-xl border border-[#E8E4DD] mb-6">
-            {[
-              { value: "customer", label: "Customer" },
-              { value: "shopOwner", label: "Shop Owner" },
-            ].map(({ value, label }) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setUserType(value)}
-                className={`flex-1 py-2 rounded-lg text-xs font-bold tracking-wide transition-all duration-200 ${
-                  userType === value
-                    ? "bg-white text-[#1a1a2e] shadow-sm border border-[#E8E4DD]"
-                    : "text-[#1a1a2e]/40 hover:text-[#1a1a2e]/70"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
           {/* Shop owner info banner */}
           {userType === "shopOwner" && (
             <div className="flex items-start gap-3 p-4 bg-[#1a1a2e]/3 border border-[#1a1a2e]/8 rounded-2xl mb-5">

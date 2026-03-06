@@ -12,7 +12,9 @@ export async function getProducts(filters = {}) {
   try {
     await dbConnect();
     // Build query based on filters
-    let query = {};
+    let query = {
+      status: "Active", // Only show active products
+    };
 
     if (filters.search) {
       query.$or = [

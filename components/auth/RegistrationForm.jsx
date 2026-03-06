@@ -74,7 +74,7 @@ export default function RegistrationForm({ userType, setUserType }) {
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Account Type Toggle */}
-        <div className="flex gap-2 mb-4 bg-gray-100 p-1 rounded-sm">
+        <div className="flex items-center gap-1 bg-[#F5F3EF] p-1 rounded-xl border border-[#E8E4DD] mb-6">
           <button
             type="button"
             id="customerTab"

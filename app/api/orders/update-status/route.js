@@ -48,6 +48,7 @@ export async function POST(request) {
 
     // Update order status
     order.status = status;
+    order.markModified("items");
     await order.save();
 
     return NextResponse.json({ success: true });

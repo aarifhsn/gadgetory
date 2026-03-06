@@ -37,7 +37,7 @@ export default function Navbar() {
         </Link>
 
         {/* Search — grows to fill space */}
-        <div className="flex-1 max-w-2xl">
+        <div className="flex-1">
           <SearchBar />
         </div>
 
