@@ -11,12 +11,12 @@ export default function CartBadge() {
   return (
     <Link
       href="/cart"
-      className="flex items-end hover:outline hover:outline-1 hover:outline-white rounded-sm p-1 cursor-pointer relative"
+      className="relative flex items-center justify-center w-9 h-9 rounded-xl hover:bg-[#F5F3EF] transition-colors duration-150"
     >
-      <ShoppingCart className="w-8 h-8" />
+      <ShoppingCart className="w-5 h-5 text-[#1a1a2e]" />
       {cartItemCount > 0 && (
-        <span className="font-bold text-amazon-secondary absolute -top-3  px-2 py-1 left-8 -translate-x-1/2 text-sm">
-          {cartItemCount}
+        <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#D4A853] text-[#1a1a2e] text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+          {cartItemCount > 9 ? "9+" : cartItemCount}
         </span>
       )}
     </Link>
