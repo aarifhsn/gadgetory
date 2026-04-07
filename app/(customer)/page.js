@@ -39,7 +39,7 @@ export default async function Home() {
       {/* ── HERO BANNER ───────────────────────────────────────────── */}
       <section className="relative w-full h-[90vh] min-h-[580px] max-h-[860px] overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-700"
+          className="absolute inset-0 bg-cover bg-bottom scale-105 transition-transform duration-700"
           style={{
             backgroundImage:
               "url('https://images.unsplash.com/photo-1491933382434-500287f9b54b?q=80&w=2574&auto=format&fit=crop')",
